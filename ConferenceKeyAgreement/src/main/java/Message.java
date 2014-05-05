@@ -295,7 +295,7 @@ public final class Message {
        * <code>INITMSG = 3;</code>
        *
        * <pre>
-       * message sent by the initiator of the conference to all the other participants
+       * message sent by the initiator of the conference to all the other participants,
        * </pre>
        */
       INITMSG(2, 3),
@@ -303,7 +303,7 @@ public final class Message {
        * <code>ADDPARTICIPANT = 4;</code>
        *
        * <pre>
-       * message sent to the new participant by the participant who added him
+       *contains a list of all selected participants (their IDs and ports)
        * </pre>
        */
       ADDPARTICIPANT(3, 4),
@@ -345,7 +345,7 @@ public final class Message {
        * <code>INITMSG = 3;</code>
        *
        * <pre>
-       * message sent by the initiator of the conference to all the other participants
+       * message sent by the initiator of the conference to all the other participants,
        * </pre>
        */
       public static final int INITMSG_VALUE = 3;
@@ -353,7 +353,7 @@ public final class Message {
        * <code>ADDPARTICIPANT = 4;</code>
        *
        * <pre>
-       * message sent to the new participant by the participant who added him
+       *contains a list of all selected participants (their IDs and ports)
        * </pre>
        */
       public static final int ADDPARTICIPANT_VALUE = 4;

@@ -2,7 +2,8 @@ message Msg{
     enum Type{
         KEYAGREEMENTPART1 = 1; // message sent in the initial phase of the protocol
         KEYAGREEMENTPART2 = 2; // message sent in the re-keying phase of the protocol
-        INITMSG = 3; // message sent by the initiator of the conference to all the other participants
+        INITMSG = 3; // message sent by the initiator of the conference to all the other participants,
+                     //contains a list of all selected participants (their IDs and ports)
         ADDPARTICIPANT = 4; // message sent to the new participant by the participant who added him
         JOINING = 5; // message sent by the new participant to all the others
         LEAVING = 6; // mesage sent by the leaving participant to all the others
