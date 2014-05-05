@@ -1,6 +1,6 @@
 /**
- * Created by zuzana on 3/25/14.
+ * @author Zuzana Melsova
  */
 public interface MessageListener {
-    public void MessageReceived(Message.Msg message);
+    public void messageReceived(Message.Msg message);
 }

@@ -1,59 +1,63 @@
 message Msg{
     enum Type{
-        KEYAGREEMENTPART1 = 1;
-        KEYAGREEMENTPART2 = 2;
-        INITMSG = 3;
-        ADDPARTICIPANT = 4;
-        JOINING = 5;
-        LEAVING = 6;
-        NEWPERIOD = 7;
-
-
-
+        KEYAGREEMENTPART1 = 1; // message sent in the initial phase of the protocol
+        KEYAGREEMENTPART2 = 2; // message sent in the re-keying phase of the protocol
+        INITMSG = 3; // message sent by the initiator of the conference to all the other participants
+        ADDPARTICIPANT = 4; // message sent to the new participant by the participant who added him
+        JOINING = 5; // message sent by the new participant to all the others
+        LEAVING = 6; // mesage sent by the leaving participant to all the others
     }
     required int32 senderId = 1;
     required Type type = 2;
     optional KeyAgreementPart1 keyAgreementPart1 = 3;
     optional KeyAgreementPart2 keyAgreementPart2 = 4;
     optional InitMsg init = 5;
-    //optional Joining joining = 6;
+    optional Joining joining = 6;
     optional AddParticipant addParticipant = 7;
 
-
     message KeyAgreementPart1{
-        required bytes pubKeyY = 2;  // y = g^x mod p, where x is the sender`s long-term private key
-        repeated bytes pubValuesGeneratedFromCoefficients = 3; // Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
+        required bytes pubKeyY = 1;
+        repeated bytes pubPolynomial = 2;
     }
     message KeyAgreementPart2{
-        required bytes pubKeyR = 2; // r = g^k, where k is the sender`s secret random number different for each period
-        repeated EncryptedSubKey encryptedSubKeys = 3; // sender`s f(z) x yj, jth member
+        required int32 period = 1; // current period
+        required bytes pubKeyR = 2;
+        repeated EncryptedSubKey encryptedSubKeys = 3;
 
         message EncryptedSubKey{
-            required int32 id = 1; //id of the member who has the private key to decrypt it
+            required int32 id = 1; //id of the member who has the private key to decrypt this sub-key
             required bytes subKey = 2;
         }
     }
     message InitMsg{
+        //finite field parameters
         required bytes p = 1;
         required bytes q = 2;
         required bytes g = 3;
-        repeated int32 id = 4;
+
+
+        repeated IdAndPort idAndPort = 4; // IDs and ports of protocol participants
+
+        message IdAndPort {
+            required int32 id = 1;
+            required int32 port = 2;
+        }
     }
-   /* message Joining{
+    message Joining{
         required KeyAgreementPart1 keyAgreementPart1 = 1;
-        required KeyAgreementPart2 keyAgreementPart2 = 2;
-    }*/
+        required int32 port = 2; // the new member's port
+
+    }
     message AddParticipant{
-        required int32 nextPeriod = 4;
-        required bytes p = 1;
-        required bytes q = 2;
-        required bytes g = 3;
-        repeated PublicData publicData = 5;
+        required int32 nextPeriod = 1;
+        required InitMsg init = 2;
+        repeated PublicData publicData = 3;
 
         message PublicData{
             required int32 id = 1;
-            required bytes pubKeyY = 2;  // y = g^x mod p, where x is the sender`s long-term private key
-            repeated bytes pubValuesGeneratedFromCoefficients = 3;
+            required bytes pubKeyY = 2;
+            repeated bytes pubPolynomial = 3;
         }
+
     }
 }

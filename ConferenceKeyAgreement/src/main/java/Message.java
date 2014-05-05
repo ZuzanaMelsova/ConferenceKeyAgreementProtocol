@@ -71,29 +71,31 @@ public final class Message {
      */
     Message.Msg.InitMsgOrBuilder getInitOrBuilder();
 
+    // optional .Msg.Joining joining = 6;
+    /**
+     * <code>optional .Msg.Joining joining = 6;</code>
+     */
+    boolean hasJoining();
+    /**
+     * <code>optional .Msg.Joining joining = 6;</code>
+     */
+    Message.Msg.Joining getJoining();
+    /**
+     * <code>optional .Msg.Joining joining = 6;</code>
+     */
+    Message.Msg.JoiningOrBuilder getJoiningOrBuilder();
+
     // optional .Msg.AddParticipant addParticipant = 7;
     /**
      * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-     *
-     * <pre>
-     *optional Joining joining = 6;
-     * </pre>
      */
     boolean hasAddParticipant();
     /**
      * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-     *
-     * <pre>
-     *optional Joining joining = 6;
-     * </pre>
      */
     Message.Msg.AddParticipant getAddParticipant();
     /**
      * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-     *
-     * <pre>
-     *optional Joining joining = 6;
-     * </pre>
      */
     Message.Msg.AddParticipantOrBuilder getAddParticipantOrBuilder();
   }
@@ -203,9 +205,22 @@ public final class Message {
               bitField0_ |= 0x00000010;
               break;
             }
+            case 50: {
+              Message.Msg.Joining.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = joining_.toBuilder();
+              }
+              joining_ = input.readMessage(Message.Msg.Joining.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(joining_);
+                joining_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000020;
+              break;
+            }
             case 58: {
               Message.Msg.AddParticipant.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+              if (((bitField0_ & 0x00000040) == 0x00000040)) {
                 subBuilder = addParticipant_.toBuilder();
               }
               addParticipant_ = input.readMessage(Message.Msg.AddParticipant.PARSER, extensionRegistry);
@@ -213,7 +228,7 @@ public final class Message {
                 subBuilder.mergeFrom(addParticipant_);
                 addParticipant_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000040;
               break;
             }
           }
@@ -262,62 +277,102 @@ public final class Message {
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
        * <code>KEYAGREEMENTPART1 = 1;</code>
+       *
+       * <pre>
+       * message sent in the initial phase of the protocol
+       * </pre>
        */
       KEYAGREEMENTPART1(0, 1),
       /**
        * <code>KEYAGREEMENTPART2 = 2;</code>
+       *
+       * <pre>
+       * message sent in the re-keying phase of the protocol
+       * </pre>
        */
       KEYAGREEMENTPART2(1, 2),
       /**
        * <code>INITMSG = 3;</code>
+       *
+       * <pre>
+       * message sent by the initiator of the conference to all the other participants
+       * </pre>
        */
       INITMSG(2, 3),
       /**
        * <code>ADDPARTICIPANT = 4;</code>
+       *
+       * <pre>
+       * message sent to the new participant by the participant who added him
+       * </pre>
        */
       ADDPARTICIPANT(3, 4),
       /**
        * <code>JOINING = 5;</code>
+       *
+       * <pre>
+       * message sent by the new participant to all the others
+       * </pre>
        */
       JOINING(4, 5),
       /**
        * <code>LEAVING = 6;</code>
+       *
+       * <pre>
+       * mesage sent by the leaving participant to all the others
+       * </pre>
        */
       LEAVING(5, 6),
-      /**
-       * <code>NEWPERIOD = 7;</code>
-       */
-      NEWPERIOD(6, 7),
       ;
 
       /**
        * <code>KEYAGREEMENTPART1 = 1;</code>
+       *
+       * <pre>
+       * message sent in the initial phase of the protocol
+       * </pre>
        */
       public static final int KEYAGREEMENTPART1_VALUE = 1;
       /**
        * <code>KEYAGREEMENTPART2 = 2;</code>
+       *
+       * <pre>
+       * message sent in the re-keying phase of the protocol
+       * </pre>
        */
       public static final int KEYAGREEMENTPART2_VALUE = 2;
       /**
        * <code>INITMSG = 3;</code>
+       *
+       * <pre>
+       * message sent by the initiator of the conference to all the other participants
+       * </pre>
        */
       public static final int INITMSG_VALUE = 3;
       /**
        * <code>ADDPARTICIPANT = 4;</code>
+       *
+       * <pre>
+       * message sent to the new participant by the participant who added him
+       * </pre>
        */
       public static final int ADDPARTICIPANT_VALUE = 4;
       /**
        * <code>JOINING = 5;</code>
+       *
+       * <pre>
+       * message sent by the new participant to all the others
+       * </pre>
        */
       public static final int JOINING_VALUE = 5;
       /**
        * <code>LEAVING = 6;</code>
+       *
+       * <pre>
+       * mesage sent by the leaving participant to all the others
+       * </pre>
        */
       public static final int LEAVING_VALUE = 6;
-      /**
-       * <code>NEWPERIOD = 7;</code>
-       */
-      public static final int NEWPERIOD_VALUE = 7;
 
 
       public final int getNumber() { return value; }
@@ -330,7 +385,6 @@ public final class Message {
           case 4: return ADDPARTICIPANT;
           case 5: return JOINING;
           case 6: return LEAVING;
-          case 7: return NEWPERIOD;
           default: return null;
         }
       }
@@ -385,49 +439,29 @@ public final class Message {
     public interface KeyAgreementPart1OrBuilder
         extends com.google.protobuf.MessageOrBuilder {
 
-      // required bytes pubKeyY = 2;
+      // required bytes pubKeyY = 1;
       /**
-       * <code>required bytes pubKeyY = 2;</code>
-       *
-       * <pre>
-       * y = g^x mod p, where x is the sender`s long-term private key
-       * </pre>
+       * <code>required bytes pubKeyY = 1;</code>
        */
       boolean hasPubKeyY();
       /**
-       * <code>required bytes pubKeyY = 2;</code>
-       *
-       * <pre>
-       * y = g^x mod p, where x is the sender`s long-term private key
-       * </pre>
+       * <code>required bytes pubKeyY = 1;</code>
        */
       com.google.protobuf.ByteString getPubKeyY();
 
-      // repeated bytes pubValuesGeneratedFromCoefficients = 3;
+      // repeated bytes pubPolynomial = 2;
       /**
-       * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-       *
-       * <pre>
-       * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-       * </pre>
+       * <code>repeated bytes pubPolynomial = 2;</code>
        */
-      java.util.List<com.google.protobuf.ByteString> getPubValuesGeneratedFromCoefficientsList();
+      java.util.List<com.google.protobuf.ByteString> getPubPolynomialList();
       /**
-       * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-       *
-       * <pre>
-       * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-       * </pre>
+       * <code>repeated bytes pubPolynomial = 2;</code>
        */
-      int getPubValuesGeneratedFromCoefficientsCount();
+      int getPubPolynomialCount();
       /**
-       * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-       *
-       * <pre>
-       * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-       * </pre>
+       * <code>repeated bytes pubPolynomial = 2;</code>
        */
-      com.google.protobuf.ByteString getPubValuesGeneratedFromCoefficients(int index);
+      com.google.protobuf.ByteString getPubPolynomial(int index);
     }
     /**
      * Protobuf type {@code Msg.KeyAgreementPart1}
@@ -480,17 +514,17 @@ public final class Message {
                 }
                 break;
               }
-              case 18: {
+              case 10: {
                 bitField0_ |= 0x00000001;
                 pubKeyY_ = input.readBytes();
                 break;
               }
-              case 26: {
+              case 18: {
                 if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                  pubValuesGeneratedFromCoefficients_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+                  pubPolynomial_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
                   mutable_bitField0_ |= 0x00000002;
                 }
-                pubValuesGeneratedFromCoefficients_.add(input.readBytes());
+                pubPolynomial_.add(input.readBytes());
                 break;
               }
             }
@@ -502,7 +536,7 @@ public final class Message {
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
           if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-            pubValuesGeneratedFromCoefficients_ = java.util.Collections.unmodifiableList(pubValuesGeneratedFromCoefficients_);
+            pubPolynomial_ = java.util.Collections.unmodifiableList(pubPolynomial_);
           }
           this.unknownFields = unknownFields.build();
           makeExtensionsImmutable();
@@ -536,68 +570,48 @@ public final class Message {
       }
 
       private int bitField0_;
-      // required bytes pubKeyY = 2;
-      public static final int PUBKEYY_FIELD_NUMBER = 2;
+      // required bytes pubKeyY = 1;
+      public static final int PUBKEYY_FIELD_NUMBER = 1;
       private com.google.protobuf.ByteString pubKeyY_;
       /**
-       * <code>required bytes pubKeyY = 2;</code>
-       *
-       * <pre>
-       * y = g^x mod p, where x is the sender`s long-term private key
-       * </pre>
+       * <code>required bytes pubKeyY = 1;</code>
        */
       public boolean hasPubKeyY() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required bytes pubKeyY = 2;</code>
-       *
-       * <pre>
-       * y = g^x mod p, where x is the sender`s long-term private key
-       * </pre>
+       * <code>required bytes pubKeyY = 1;</code>
        */
       public com.google.protobuf.ByteString getPubKeyY() {
         return pubKeyY_;
       }
 
-      // repeated bytes pubValuesGeneratedFromCoefficients = 3;
-      public static final int PUBVALUESGENERATEDFROMCOEFFICIENTS_FIELD_NUMBER = 3;
-      private java.util.List<com.google.protobuf.ByteString> pubValuesGeneratedFromCoefficients_;
+      // repeated bytes pubPolynomial = 2;
+      public static final int PUBPOLYNOMIAL_FIELD_NUMBER = 2;
+      private java.util.List<com.google.protobuf.ByteString> pubPolynomial_;
       /**
-       * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-       *
-       * <pre>
-       * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-       * </pre>
+       * <code>repeated bytes pubPolynomial = 2;</code>
        */
       public java.util.List<com.google.protobuf.ByteString>
-          getPubValuesGeneratedFromCoefficientsList() {
-        return pubValuesGeneratedFromCoefficients_;
+          getPubPolynomialList() {
+        return pubPolynomial_;
       }
       /**
-       * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-       *
-       * <pre>
-       * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-       * </pre>
+       * <code>repeated bytes pubPolynomial = 2;</code>
        */
-      public int getPubValuesGeneratedFromCoefficientsCount() {
-        return pubValuesGeneratedFromCoefficients_.size();
+      public int getPubPolynomialCount() {
+        return pubPolynomial_.size();
       }
       /**
-       * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-       *
-       * <pre>
-       * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-       * </pre>
+       * <code>repeated bytes pubPolynomial = 2;</code>
        */
-      public com.google.protobuf.ByteString getPubValuesGeneratedFromCoefficients(int index) {
-        return pubValuesGeneratedFromCoefficients_.get(index);
+      public com.google.protobuf.ByteString getPubPolynomial(int index) {
+        return pubPolynomial_.get(index);
       }
 
       private void initFields() {
         pubKeyY_ = com.google.protobuf.ByteString.EMPTY;
-        pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
+        pubPolynomial_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -616,10 +630,10 @@ public final class Message {
                           throws java.io.IOException {
         getSerializedSize();
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeBytes(2, pubKeyY_);
+          output.writeBytes(1, pubKeyY_);
         }
-        for (int i = 0; i < pubValuesGeneratedFromCoefficients_.size(); i++) {
-          output.writeBytes(3, pubValuesGeneratedFromCoefficients_.get(i));
+        for (int i = 0; i < pubPolynomial_.size(); i++) {
+          output.writeBytes(2, pubPolynomial_.get(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -632,16 +646,16 @@ public final class Message {
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(2, pubKeyY_);
+            .computeBytesSize(1, pubKeyY_);
         }
         {
           int dataSize = 0;
-          for (int i = 0; i < pubValuesGeneratedFromCoefficients_.size(); i++) {
+          for (int i = 0; i < pubPolynomial_.size(); i++) {
             dataSize += com.google.protobuf.CodedOutputStream
-              .computeBytesSizeNoTag(pubValuesGeneratedFromCoefficients_.get(i));
+              .computeBytesSizeNoTag(pubPolynomial_.get(i));
           }
           size += dataSize;
-          size += 1 * getPubValuesGeneratedFromCoefficientsList().size();
+          size += 1 * getPubPolynomialList().size();
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -761,7 +775,7 @@ public final class Message {
           super.clear();
           pubKeyY_ = com.google.protobuf.ByteString.EMPTY;
           bitField0_ = (bitField0_ & ~0x00000001);
-          pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
+          pubPolynomial_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
@@ -796,10 +810,10 @@ public final class Message {
           }
           result.pubKeyY_ = pubKeyY_;
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
-            pubValuesGeneratedFromCoefficients_ = java.util.Collections.unmodifiableList(pubValuesGeneratedFromCoefficients_);
+            pubPolynomial_ = java.util.Collections.unmodifiableList(pubPolynomial_);
             bitField0_ = (bitField0_ & ~0x00000002);
           }
-          result.pubValuesGeneratedFromCoefficients_ = pubValuesGeneratedFromCoefficients_;
+          result.pubPolynomial_ = pubPolynomial_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -819,13 +833,13 @@ public final class Message {
           if (other.hasPubKeyY()) {
             setPubKeyY(other.getPubKeyY());
           }
-          if (!other.pubValuesGeneratedFromCoefficients_.isEmpty()) {
-            if (pubValuesGeneratedFromCoefficients_.isEmpty()) {
-              pubValuesGeneratedFromCoefficients_ = other.pubValuesGeneratedFromCoefficients_;
+          if (!other.pubPolynomial_.isEmpty()) {
+            if (pubPolynomial_.isEmpty()) {
+              pubPolynomial_ = other.pubPolynomial_;
               bitField0_ = (bitField0_ & ~0x00000002);
             } else {
-              ensurePubValuesGeneratedFromCoefficientsIsMutable();
-              pubValuesGeneratedFromCoefficients_.addAll(other.pubValuesGeneratedFromCoefficients_);
+              ensurePubPolynomialIsMutable();
+              pubPolynomial_.addAll(other.pubPolynomial_);
             }
             onChanged();
           }
@@ -860,34 +874,22 @@ public final class Message {
         }
         private int bitField0_;
 
-        // required bytes pubKeyY = 2;
+        // required bytes pubKeyY = 1;
         private com.google.protobuf.ByteString pubKeyY_ = com.google.protobuf.ByteString.EMPTY;
         /**
-         * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
+         * <code>required bytes pubKeyY = 1;</code>
          */
         public boolean hasPubKeyY() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
+         * <code>required bytes pubKeyY = 1;</code>
          */
         public com.google.protobuf.ByteString getPubKeyY() {
           return pubKeyY_;
         }
         /**
-         * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
+         * <code>required bytes pubKeyY = 1;</code>
          */
         public Builder setPubKeyY(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -899,11 +901,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
+         * <code>required bytes pubKeyY = 1;</code>
          */
         public Builder clearPubKeyY() {
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -912,101 +910,73 @@ public final class Message {
           return this;
         }
 
-        // repeated bytes pubValuesGeneratedFromCoefficients = 3;
-        private java.util.List<com.google.protobuf.ByteString> pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
-        private void ensurePubValuesGeneratedFromCoefficientsIsMutable() {
+        // repeated bytes pubPolynomial = 2;
+        private java.util.List<com.google.protobuf.ByteString> pubPolynomial_ = java.util.Collections.emptyList();
+        private void ensurePubPolynomialIsMutable() {
           if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-            pubValuesGeneratedFromCoefficients_ = new java.util.ArrayList<com.google.protobuf.ByteString>(pubValuesGeneratedFromCoefficients_);
+            pubPolynomial_ = new java.util.ArrayList<com.google.protobuf.ByteString>(pubPolynomial_);
             bitField0_ |= 0x00000002;
            }
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-         *
-         * <pre>
-         * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-         * </pre>
+         * <code>repeated bytes pubPolynomial = 2;</code>
          */
         public java.util.List<com.google.protobuf.ByteString>
-            getPubValuesGeneratedFromCoefficientsList() {
-          return java.util.Collections.unmodifiableList(pubValuesGeneratedFromCoefficients_);
+            getPubPolynomialList() {
+          return java.util.Collections.unmodifiableList(pubPolynomial_);
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-         *
-         * <pre>
-         * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-         * </pre>
+         * <code>repeated bytes pubPolynomial = 2;</code>
          */
-        public int getPubValuesGeneratedFromCoefficientsCount() {
-          return pubValuesGeneratedFromCoefficients_.size();
+        public int getPubPolynomialCount() {
+          return pubPolynomial_.size();
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-         *
-         * <pre>
-         * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-         * </pre>
+         * <code>repeated bytes pubPolynomial = 2;</code>
          */
-        public com.google.protobuf.ByteString getPubValuesGeneratedFromCoefficients(int index) {
-          return pubValuesGeneratedFromCoefficients_.get(index);
+        public com.google.protobuf.ByteString getPubPolynomial(int index) {
+          return pubPolynomial_.get(index);
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-         *
-         * <pre>
-         * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-         * </pre>
+         * <code>repeated bytes pubPolynomial = 2;</code>
          */
-        public Builder setPubValuesGeneratedFromCoefficients(
+        public Builder setPubPolynomial(
             int index, com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  ensurePubValuesGeneratedFromCoefficientsIsMutable();
-          pubValuesGeneratedFromCoefficients_.set(index, value);
+  ensurePubPolynomialIsMutable();
+          pubPolynomial_.set(index, value);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-         *
-         * <pre>
-         * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-         * </pre>
+         * <code>repeated bytes pubPolynomial = 2;</code>
          */
-        public Builder addPubValuesGeneratedFromCoefficients(com.google.protobuf.ByteString value) {
+        public Builder addPubPolynomial(com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  ensurePubValuesGeneratedFromCoefficientsIsMutable();
-          pubValuesGeneratedFromCoefficients_.add(value);
+  ensurePubPolynomialIsMutable();
+          pubPolynomial_.add(value);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-         *
-         * <pre>
-         * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-         * </pre>
+         * <code>repeated bytes pubPolynomial = 2;</code>
          */
-        public Builder addAllPubValuesGeneratedFromCoefficients(
+        public Builder addAllPubPolynomial(
             java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
-          ensurePubValuesGeneratedFromCoefficientsIsMutable();
-          super.addAll(values, pubValuesGeneratedFromCoefficients_);
+          ensurePubPolynomialIsMutable();
+          super.addAll(values, pubPolynomial_);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
-         *
-         * <pre>
-         * Ck = g^ak mod p, where ak is the kth coefficient of the sender`s secret polynomial
-         * </pre>
+         * <code>repeated bytes pubPolynomial = 2;</code>
          */
-        public Builder clearPubValuesGeneratedFromCoefficients() {
-          pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
+        public Builder clearPubPolynomial() {
+          pubPolynomial_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
           return this;
@@ -1026,65 +996,55 @@ public final class Message {
     public interface KeyAgreementPart2OrBuilder
         extends com.google.protobuf.MessageOrBuilder {
 
+      // required int32 period = 1;
+      /**
+       * <code>required int32 period = 1;</code>
+       *
+       * <pre>
+       * current period
+       * </pre>
+       */
+      boolean hasPeriod();
+      /**
+       * <code>required int32 period = 1;</code>
+       *
+       * <pre>
+       * current period
+       * </pre>
+       */
+      int getPeriod();
+
       // required bytes pubKeyR = 2;
       /**
        * <code>required bytes pubKeyR = 2;</code>
-       *
-       * <pre>
-       * r = g^k, where k is the sender`s secret random number different for each period
-       * </pre>
        */
       boolean hasPubKeyR();
       /**
        * <code>required bytes pubKeyR = 2;</code>
-       *
-       * <pre>
-       * r = g^k, where k is the sender`s secret random number different for each period
-       * </pre>
        */
       com.google.protobuf.ByteString getPubKeyR();
 
       // repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       java.util.List<Message.Msg.KeyAgreementPart2.EncryptedSubKey> 
           getEncryptedSubKeysList();
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       Message.Msg.KeyAgreementPart2.EncryptedSubKey getEncryptedSubKeys(int index);
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       int getEncryptedSubKeysCount();
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       java.util.List<? extends Message.Msg.KeyAgreementPart2.EncryptedSubKeyOrBuilder> 
           getEncryptedSubKeysOrBuilderList();
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       Message.Msg.KeyAgreementPart2.EncryptedSubKeyOrBuilder getEncryptedSubKeysOrBuilder(
           int index);
@@ -1140,15 +1100,20 @@ public final class Message {
                 }
                 break;
               }
-              case 18: {
+              case 8: {
                 bitField0_ |= 0x00000001;
+                period_ = input.readInt32();
+                break;
+              }
+              case 18: {
+                bitField0_ |= 0x00000002;
                 pubKeyR_ = input.readBytes();
                 break;
               }
               case 26: {
-                if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                   encryptedSubKeys_ = new java.util.ArrayList<Message.Msg.KeyAgreementPart2.EncryptedSubKey>();
-                  mutable_bitField0_ |= 0x00000002;
+                  mutable_bitField0_ |= 0x00000004;
                 }
                 encryptedSubKeys_.add(input.readMessage(Message.Msg.KeyAgreementPart2.EncryptedSubKey.PARSER, extensionRegistry));
                 break;
@@ -1161,7 +1126,7 @@ public final class Message {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
             encryptedSubKeys_ = java.util.Collections.unmodifiableList(encryptedSubKeys_);
           }
           this.unknownFields = unknownFields.build();
@@ -1203,7 +1168,7 @@ public final class Message {
          * <code>required int32 id = 1;</code>
          *
          * <pre>
-         *id of the member who has the private key to decrypt it
+         *id of the member who has the private key to decrypt this sub-key
          * </pre>
          */
         boolean hasId();
@@ -1211,7 +1176,7 @@ public final class Message {
          * <code>required int32 id = 1;</code>
          *
          * <pre>
-         *id of the member who has the private key to decrypt it
+         *id of the member who has the private key to decrypt this sub-key
          * </pre>
          */
         int getId();
@@ -1334,7 +1299,7 @@ public final class Message {
          * <code>required int32 id = 1;</code>
          *
          * <pre>
-         *id of the member who has the private key to decrypt it
+         *id of the member who has the private key to decrypt this sub-key
          * </pre>
          */
         public boolean hasId() {
@@ -1344,7 +1309,7 @@ public final class Message {
          * <code>required int32 id = 1;</code>
          *
          * <pre>
-         *id of the member who has the private key to decrypt it
+         *id of the member who has the private key to decrypt this sub-key
          * </pre>
          */
         public int getId() {
@@ -1633,7 +1598,7 @@ public final class Message {
            * <code>required int32 id = 1;</code>
            *
            * <pre>
-           *id of the member who has the private key to decrypt it
+           *id of the member who has the private key to decrypt this sub-key
            * </pre>
            */
           public boolean hasId() {
@@ -1643,7 +1608,7 @@ public final class Message {
            * <code>required int32 id = 1;</code>
            *
            * <pre>
-           *id of the member who has the private key to decrypt it
+           *id of the member who has the private key to decrypt this sub-key
            * </pre>
            */
           public int getId() {
@@ -1653,7 +1618,7 @@ public final class Message {
            * <code>required int32 id = 1;</code>
            *
            * <pre>
-           *id of the member who has the private key to decrypt it
+           *id of the member who has the private key to decrypt this sub-key
            * </pre>
            */
           public Builder setId(int value) {
@@ -1666,7 +1631,7 @@ public final class Message {
            * <code>required int32 id = 1;</code>
            *
            * <pre>
-           *id of the member who has the private key to decrypt it
+           *id of the member who has the private key to decrypt this sub-key
            * </pre>
            */
           public Builder clearId() {
@@ -1724,25 +1689,41 @@ public final class Message {
       }
 
       private int bitField0_;
+      // required int32 period = 1;
+      public static final int PERIOD_FIELD_NUMBER = 1;
+      private int period_;
+      /**
+       * <code>required int32 period = 1;</code>
+       *
+       * <pre>
+       * current period
+       * </pre>
+       */
+      public boolean hasPeriod() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 period = 1;</code>
+       *
+       * <pre>
+       * current period
+       * </pre>
+       */
+      public int getPeriod() {
+        return period_;
+      }
+
       // required bytes pubKeyR = 2;
       public static final int PUBKEYR_FIELD_NUMBER = 2;
       private com.google.protobuf.ByteString pubKeyR_;
       /**
        * <code>required bytes pubKeyR = 2;</code>
-       *
-       * <pre>
-       * r = g^k, where k is the sender`s secret random number different for each period
-       * </pre>
        */
       public boolean hasPubKeyR() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>required bytes pubKeyR = 2;</code>
-       *
-       * <pre>
-       * r = g^k, where k is the sender`s secret random number different for each period
-       * </pre>
        */
       public com.google.protobuf.ByteString getPubKeyR() {
         return pubKeyR_;
@@ -1753,20 +1734,12 @@ public final class Message {
       private java.util.List<Message.Msg.KeyAgreementPart2.EncryptedSubKey> encryptedSubKeys_;
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       public java.util.List<Message.Msg.KeyAgreementPart2.EncryptedSubKey> getEncryptedSubKeysList() {
         return encryptedSubKeys_;
       }
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       public java.util.List<? extends Message.Msg.KeyAgreementPart2.EncryptedSubKeyOrBuilder> 
           getEncryptedSubKeysOrBuilderList() {
@@ -1774,30 +1747,18 @@ public final class Message {
       }
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       public int getEncryptedSubKeysCount() {
         return encryptedSubKeys_.size();
       }
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       public Message.Msg.KeyAgreementPart2.EncryptedSubKey getEncryptedSubKeys(int index) {
         return encryptedSubKeys_.get(index);
       }
       /**
        * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-       *
-       * <pre>
-       * sender`s f(z) x yj, jth member
-       * </pre>
        */
       public Message.Msg.KeyAgreementPart2.EncryptedSubKeyOrBuilder getEncryptedSubKeysOrBuilder(
           int index) {
@@ -1805,6 +1766,7 @@ public final class Message {
       }
 
       private void initFields() {
+        period_ = 0;
         pubKeyR_ = com.google.protobuf.ByteString.EMPTY;
         encryptedSubKeys_ = java.util.Collections.emptyList();
       }
@@ -1813,6 +1775,10 @@ public final class Message {
         byte isInitialized = memoizedIsInitialized;
         if (isInitialized != -1) return isInitialized == 1;
 
+        if (!hasPeriod()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
         if (!hasPubKeyR()) {
           memoizedIsInitialized = 0;
           return false;
@@ -1831,6 +1797,9 @@ public final class Message {
                           throws java.io.IOException {
         getSerializedSize();
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeInt32(1, period_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
           output.writeBytes(2, pubKeyR_);
         }
         for (int i = 0; i < encryptedSubKeys_.size(); i++) {
@@ -1846,6 +1815,10 @@ public final class Message {
 
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(1, period_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
             .computeBytesSize(2, pubKeyR_);
         }
@@ -1970,11 +1943,13 @@ public final class Message {
 
         public Builder clear() {
           super.clear();
-          pubKeyR_ = com.google.protobuf.ByteString.EMPTY;
+          period_ = 0;
           bitField0_ = (bitField0_ & ~0x00000001);
+          pubKeyR_ = com.google.protobuf.ByteString.EMPTY;
+          bitField0_ = (bitField0_ & ~0x00000002);
           if (encryptedSubKeysBuilder_ == null) {
             encryptedSubKeys_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
           } else {
             encryptedSubKeysBuilder_.clear();
           }
@@ -2009,11 +1984,15 @@ public final class Message {
           if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
             to_bitField0_ |= 0x00000001;
           }
+          result.period_ = period_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
           result.pubKeyR_ = pubKeyR_;
           if (encryptedSubKeysBuilder_ == null) {
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
               encryptedSubKeys_ = java.util.Collections.unmodifiableList(encryptedSubKeys_);
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
             }
             result.encryptedSubKeys_ = encryptedSubKeys_;
           } else {
@@ -2035,6 +2014,9 @@ public final class Message {
 
         public Builder mergeFrom(Message.Msg.KeyAgreementPart2 other) {
           if (other == Message.Msg.KeyAgreementPart2.getDefaultInstance()) return this;
+          if (other.hasPeriod()) {
+            setPeriod(other.getPeriod());
+          }
           if (other.hasPubKeyR()) {
             setPubKeyR(other.getPubKeyR());
           }
@@ -2042,7 +2024,7 @@ public final class Message {
             if (!other.encryptedSubKeys_.isEmpty()) {
               if (encryptedSubKeys_.isEmpty()) {
                 encryptedSubKeys_ = other.encryptedSubKeys_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
               } else {
                 ensureEncryptedSubKeysIsMutable();
                 encryptedSubKeys_.addAll(other.encryptedSubKeys_);
@@ -2055,7 +2037,7 @@ public final class Message {
                 encryptedSubKeysBuilder_.dispose();
                 encryptedSubKeysBuilder_ = null;
                 encryptedSubKeys_ = other.encryptedSubKeys_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
                 encryptedSubKeysBuilder_ = 
                   com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                      getEncryptedSubKeysFieldBuilder() : null;
@@ -2069,6 +2051,10 @@ public final class Message {
         }
 
         public final boolean isInitialized() {
+          if (!hasPeriod()) {
+            
+            return false;
+          }
           if (!hasPubKeyR()) {
             
             return false;
@@ -2101,53 +2087,86 @@ public final class Message {
         }
         private int bitField0_;
 
+        // required int32 period = 1;
+        private int period_ ;
+        /**
+         * <code>required int32 period = 1;</code>
+         *
+         * <pre>
+         * current period
+         * </pre>
+         */
+        public boolean hasPeriod() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>required int32 period = 1;</code>
+         *
+         * <pre>
+         * current period
+         * </pre>
+         */
+        public int getPeriod() {
+          return period_;
+        }
+        /**
+         * <code>required int32 period = 1;</code>
+         *
+         * <pre>
+         * current period
+         * </pre>
+         */
+        public Builder setPeriod(int value) {
+          bitField0_ |= 0x00000001;
+          period_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required int32 period = 1;</code>
+         *
+         * <pre>
+         * current period
+         * </pre>
+         */
+        public Builder clearPeriod() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          period_ = 0;
+          onChanged();
+          return this;
+        }
+
         // required bytes pubKeyR = 2;
         private com.google.protobuf.ByteString pubKeyR_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>required bytes pubKeyR = 2;</code>
-         *
-         * <pre>
-         * r = g^k, where k is the sender`s secret random number different for each period
-         * </pre>
          */
         public boolean hasPubKeyR() {
-          return ((bitField0_ & 0x00000001) == 0x00000001);
+          return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
          * <code>required bytes pubKeyR = 2;</code>
-         *
-         * <pre>
-         * r = g^k, where k is the sender`s secret random number different for each period
-         * </pre>
          */
         public com.google.protobuf.ByteString getPubKeyR() {
           return pubKeyR_;
         }
         /**
          * <code>required bytes pubKeyR = 2;</code>
-         *
-         * <pre>
-         * r = g^k, where k is the sender`s secret random number different for each period
-         * </pre>
          */
         public Builder setPubKeyR(com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
           pubKeyR_ = value;
           onChanged();
           return this;
         }
         /**
          * <code>required bytes pubKeyR = 2;</code>
-         *
-         * <pre>
-         * r = g^k, where k is the sender`s secret random number different for each period
-         * </pre>
          */
         public Builder clearPubKeyR() {
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
           pubKeyR_ = getDefaultInstance().getPubKeyR();
           onChanged();
           return this;
@@ -2157,9 +2176,9 @@ public final class Message {
         private java.util.List<Message.Msg.KeyAgreementPart2.EncryptedSubKey> encryptedSubKeys_ =
           java.util.Collections.emptyList();
         private void ensureEncryptedSubKeysIsMutable() {
-          if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          if (!((bitField0_ & 0x00000004) == 0x00000004)) {
             encryptedSubKeys_ = new java.util.ArrayList<Message.Msg.KeyAgreementPart2.EncryptedSubKey>(encryptedSubKeys_);
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000004;
            }
         }
 
@@ -2168,10 +2187,6 @@ public final class Message {
 
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public java.util.List<Message.Msg.KeyAgreementPart2.EncryptedSubKey> getEncryptedSubKeysList() {
           if (encryptedSubKeysBuilder_ == null) {
@@ -2182,10 +2197,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public int getEncryptedSubKeysCount() {
           if (encryptedSubKeysBuilder_ == null) {
@@ -2196,10 +2207,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Message.Msg.KeyAgreementPart2.EncryptedSubKey getEncryptedSubKeys(int index) {
           if (encryptedSubKeysBuilder_ == null) {
@@ -2210,10 +2217,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder setEncryptedSubKeys(
             int index, Message.Msg.KeyAgreementPart2.EncryptedSubKey value) {
@@ -2231,10 +2234,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder setEncryptedSubKeys(
             int index, Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder builderForValue) {
@@ -2249,10 +2248,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder addEncryptedSubKeys(Message.Msg.KeyAgreementPart2.EncryptedSubKey value) {
           if (encryptedSubKeysBuilder_ == null) {
@@ -2269,10 +2264,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder addEncryptedSubKeys(
             int index, Message.Msg.KeyAgreementPart2.EncryptedSubKey value) {
@@ -2290,10 +2281,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder addEncryptedSubKeys(
             Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder builderForValue) {
@@ -2308,10 +2295,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder addEncryptedSubKeys(
             int index, Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder builderForValue) {
@@ -2326,10 +2309,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder addAllEncryptedSubKeys(
             java.lang.Iterable<? extends Message.Msg.KeyAgreementPart2.EncryptedSubKey> values) {
@@ -2344,15 +2323,11 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder clearEncryptedSubKeys() {
           if (encryptedSubKeysBuilder_ == null) {
             encryptedSubKeys_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
             onChanged();
           } else {
             encryptedSubKeysBuilder_.clear();
@@ -2361,10 +2336,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Builder removeEncryptedSubKeys(int index) {
           if (encryptedSubKeysBuilder_ == null) {
@@ -2378,10 +2349,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder getEncryptedSubKeysBuilder(
             int index) {
@@ -2389,10 +2356,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Message.Msg.KeyAgreementPart2.EncryptedSubKeyOrBuilder getEncryptedSubKeysOrBuilder(
             int index) {
@@ -2403,10 +2366,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public java.util.List<? extends Message.Msg.KeyAgreementPart2.EncryptedSubKeyOrBuilder> 
              getEncryptedSubKeysOrBuilderList() {
@@ -2418,10 +2377,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder addEncryptedSubKeysBuilder() {
           return getEncryptedSubKeysFieldBuilder().addBuilder(
@@ -2429,10 +2384,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder addEncryptedSubKeysBuilder(
             int index) {
@@ -2441,10 +2392,6 @@ public final class Message {
         }
         /**
          * <code>repeated .Msg.KeyAgreementPart2.EncryptedSubKey encryptedSubKeys = 3;</code>
-         *
-         * <pre>
-         * sender`s f(z) x yj, jth member
-         * </pre>
          */
         public java.util.List<Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder> 
              getEncryptedSubKeysBuilderList() {
@@ -2457,7 +2404,7 @@ public final class Message {
             encryptedSubKeysBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
                 Message.Msg.KeyAgreementPart2.EncryptedSubKey, Message.Msg.KeyAgreementPart2.EncryptedSubKey.Builder, Message.Msg.KeyAgreementPart2.EncryptedSubKeyOrBuilder>(
                     encryptedSubKeys_,
-                    ((bitField0_ & 0x00000002) == 0x00000002),
+                    ((bitField0_ & 0x00000004) == 0x00000004),
                     getParentForChildren(),
                     isClean());
             encryptedSubKeys_ = null;
@@ -2482,10 +2429,18 @@ public final class Message {
       // required bytes p = 1;
       /**
        * <code>required bytes p = 1;</code>
+       *
+       * <pre>
+       *finite field parameters
+       * </pre>
        */
       boolean hasP();
       /**
        * <code>required bytes p = 1;</code>
+       *
+       * <pre>
+       *finite field parameters
+       * </pre>
        */
       com.google.protobuf.ByteString getP();
 
@@ -2509,19 +2464,50 @@ public final class Message {
        */
       com.google.protobuf.ByteString getG();
 
-      // repeated int32 id = 4;
+      // repeated .Msg.InitMsg.IdAndPort idAndPort = 4;
       /**
-       * <code>repeated int32 id = 4;</code>
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
        */
-      java.util.List<java.lang.Integer> getIdList();
+      java.util.List<Message.Msg.InitMsg.IdAndPort> 
+          getIdAndPortList();
       /**
-       * <code>repeated int32 id = 4;</code>
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
        */
-      int getIdCount();
+      Message.Msg.InitMsg.IdAndPort getIdAndPort(int index);
       /**
-       * <code>repeated int32 id = 4;</code>
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
        */
-      int getId(int index);
+      int getIdAndPortCount();
+      /**
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
+       */
+      java.util.List<? extends Message.Msg.InitMsg.IdAndPortOrBuilder> 
+          getIdAndPortOrBuilderList();
+      /**
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
+       */
+      Message.Msg.InitMsg.IdAndPortOrBuilder getIdAndPortOrBuilder(
+          int index);
     }
     /**
      * Protobuf type {@code Msg.InitMsg}
@@ -2589,25 +2575,12 @@ public final class Message {
                 g_ = input.readBytes();
                 break;
               }
-              case 32: {
-                if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                  id_ = new java.util.ArrayList<java.lang.Integer>();
-                  mutable_bitField0_ |= 0x00000008;
-                }
-                id_.add(input.readInt32());
-                break;
-              }
               case 34: {
-                int length = input.readRawVarint32();
-                int limit = input.pushLimit(length);
-                if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
-                  id_ = new java.util.ArrayList<java.lang.Integer>();
+                if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                  idAndPort_ = new java.util.ArrayList<Message.Msg.InitMsg.IdAndPort>();
                   mutable_bitField0_ |= 0x00000008;
                 }
-                while (input.getBytesUntilLimit() > 0) {
-                  id_.add(input.readInt32());
-                }
-                input.popLimit(limit);
+                idAndPort_.add(input.readMessage(Message.Msg.InitMsg.IdAndPort.PARSER, extensionRegistry));
                 break;
               }
             }
@@ -2619,7 +2592,7 @@ public final class Message {
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
           if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-            id_ = java.util.Collections.unmodifiableList(id_);
+            idAndPort_ = java.util.Collections.unmodifiableList(idAndPort_);
           }
           this.unknownFields = unknownFields.build();
           makeExtensionsImmutable();
@@ -2652,18 +2625,519 @@ public final class Message {
         return PARSER;
       }
 
+      public interface IdAndPortOrBuilder
+          extends com.google.protobuf.MessageOrBuilder {
+
+        // required int32 id = 1;
+        /**
+         * <code>required int32 id = 1;</code>
+         */
+        boolean hasId();
+        /**
+         * <code>required int32 id = 1;</code>
+         */
+        int getId();
+
+        // required int32 port = 2;
+        /**
+         * <code>required int32 port = 2;</code>
+         */
+        boolean hasPort();
+        /**
+         * <code>required int32 port = 2;</code>
+         */
+        int getPort();
+      }
+      /**
+       * Protobuf type {@code Msg.InitMsg.IdAndPort}
+       */
+      public static final class IdAndPort extends
+          com.google.protobuf.GeneratedMessage
+          implements IdAndPortOrBuilder {
+        // Use IdAndPort.newBuilder() to construct.
+        private IdAndPort(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+          super(builder);
+          this.unknownFields = builder.getUnknownFields();
+        }
+        private IdAndPort(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+        private static final IdAndPort defaultInstance;
+        public static IdAndPort getDefaultInstance() {
+          return defaultInstance;
+        }
+
+        public IdAndPort getDefaultInstanceForType() {
+          return defaultInstance;
+        }
+
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+            getUnknownFields() {
+          return this.unknownFields;
+        }
+        private IdAndPort(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          initFields();
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!parseUnknownField(input, unknownFields,
+                                         extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 8: {
+                  bitField0_ |= 0x00000001;
+                  id_ = input.readInt32();
+                  break;
+                }
+                case 16: {
+                  bitField0_ |= 0x00000002;
+                  port_ = input.readInt32();
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this);
+          } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return Message.internal_static_Msg_InitMsg_IdAndPort_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return Message.internal_static_Msg_InitMsg_IdAndPort_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  Message.Msg.InitMsg.IdAndPort.class, Message.Msg.InitMsg.IdAndPort.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<IdAndPort> PARSER =
+            new com.google.protobuf.AbstractParser<IdAndPort>() {
+          public IdAndPort parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new IdAndPort(input, extensionRegistry);
+          }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<IdAndPort> getParserForType() {
+          return PARSER;
+        }
+
+        private int bitField0_;
+        // required int32 id = 1;
+        public static final int ID_FIELD_NUMBER = 1;
+        private int id_;
+        /**
+         * <code>required int32 id = 1;</code>
+         */
+        public boolean hasId() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>required int32 id = 1;</code>
+         */
+        public int getId() {
+          return id_;
+        }
+
+        // required int32 port = 2;
+        public static final int PORT_FIELD_NUMBER = 2;
+        private int port_;
+        /**
+         * <code>required int32 port = 2;</code>
+         */
+        public boolean hasPort() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>required int32 port = 2;</code>
+         */
+        public int getPort() {
+          return port_;
+        }
+
+        private void initFields() {
+          id_ = 0;
+          port_ = 0;
+        }
+        private byte memoizedIsInitialized = -1;
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized != -1) return isInitialized == 1;
+
+          if (!hasId()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          if (!hasPort()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          getSerializedSize();
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            output.writeInt32(1, id_);
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            output.writeInt32(2, port_);
+          }
+          getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+        public int getSerializedSize() {
+          int size = memoizedSerializedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(1, id_);
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(2, port_);
+          }
+          size += getUnknownFields().getSerializedSize();
+          memoizedSerializedSize = size;
+          return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+        @java.lang.Override
+        protected java.lang.Object writeReplace()
+            throws java.io.ObjectStreamException {
+          return super.writeReplace();
+        }
+
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static Message.Msg.InitMsg.IdAndPort parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() { return Builder.create(); }
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder(Message.Msg.InitMsg.IdAndPort prototype) {
+          return newBuilder().mergeFrom(prototype);
+        }
+        public Builder toBuilder() { return newBuilder(this); }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code Msg.InitMsg.IdAndPort}
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessage.Builder<Builder>
+           implements Message.Msg.InitMsg.IdAndPortOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return Message.internal_static_Msg_InitMsg_IdAndPort_descriptor;
+          }
+
+          protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return Message.internal_static_Msg_InitMsg_IdAndPort_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    Message.Msg.InitMsg.IdAndPort.class, Message.Msg.InitMsg.IdAndPort.Builder.class);
+          }
+
+          // Construct using Message.Msg.InitMsg.IdAndPort.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            }
+          }
+          private static Builder create() {
+            return new Builder();
+          }
+
+          public Builder clear() {
+            super.clear();
+            id_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            port_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            return this;
+          }
+
+          public Builder clone() {
+            return create().mergeFrom(buildPartial());
+          }
+
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return Message.internal_static_Msg_InitMsg_IdAndPort_descriptor;
+          }
+
+          public Message.Msg.InitMsg.IdAndPort getDefaultInstanceForType() {
+            return Message.Msg.InitMsg.IdAndPort.getDefaultInstance();
+          }
+
+          public Message.Msg.InitMsg.IdAndPort build() {
+            Message.Msg.InitMsg.IdAndPort result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          public Message.Msg.InitMsg.IdAndPort buildPartial() {
+            Message.Msg.InitMsg.IdAndPort result = new Message.Msg.InitMsg.IdAndPort(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.id_ = id_;
+            if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.port_ = port_;
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof Message.Msg.InitMsg.IdAndPort) {
+              return mergeFrom((Message.Msg.InitMsg.IdAndPort)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(Message.Msg.InitMsg.IdAndPort other) {
+            if (other == Message.Msg.InitMsg.IdAndPort.getDefaultInstance()) return this;
+            if (other.hasId()) {
+              setId(other.getId());
+            }
+            if (other.hasPort()) {
+              setPort(other.getPort());
+            }
+            this.mergeUnknownFields(other.getUnknownFields());
+            return this;
+          }
+
+          public final boolean isInitialized() {
+            if (!hasId()) {
+              
+              return false;
+            }
+            if (!hasPort()) {
+              
+              return false;
+            }
+            return true;
+          }
+
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            Message.Msg.InitMsg.IdAndPort parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (Message.Msg.InitMsg.IdAndPort) e.getUnfinishedMessage();
+              throw e;
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          // required int32 id = 1;
+          private int id_ ;
+          /**
+           * <code>required int32 id = 1;</code>
+           */
+          public boolean hasId() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+          }
+          /**
+           * <code>required int32 id = 1;</code>
+           */
+          public int getId() {
+            return id_;
+          }
+          /**
+           * <code>required int32 id = 1;</code>
+           */
+          public Builder setId(int value) {
+            bitField0_ |= 0x00000001;
+            id_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required int32 id = 1;</code>
+           */
+          public Builder clearId() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            id_ = 0;
+            onChanged();
+            return this;
+          }
+
+          // required int32 port = 2;
+          private int port_ ;
+          /**
+           * <code>required int32 port = 2;</code>
+           */
+          public boolean hasPort() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+          }
+          /**
+           * <code>required int32 port = 2;</code>
+           */
+          public int getPort() {
+            return port_;
+          }
+          /**
+           * <code>required int32 port = 2;</code>
+           */
+          public Builder setPort(int value) {
+            bitField0_ |= 0x00000002;
+            port_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>required int32 port = 2;</code>
+           */
+          public Builder clearPort() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            port_ = 0;
+            onChanged();
+            return this;
+          }
+
+          // @@protoc_insertion_point(builder_scope:Msg.InitMsg.IdAndPort)
+        }
+
+        static {
+          defaultInstance = new IdAndPort(true);
+          defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:Msg.InitMsg.IdAndPort)
+      }
+
       private int bitField0_;
       // required bytes p = 1;
       public static final int P_FIELD_NUMBER = 1;
       private com.google.protobuf.ByteString p_;
       /**
        * <code>required bytes p = 1;</code>
+       *
+       * <pre>
+       *finite field parameters
+       * </pre>
        */
       public boolean hasP() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>required bytes p = 1;</code>
+       *
+       * <pre>
+       *finite field parameters
+       * </pre>
        */
       public com.google.protobuf.ByteString getP() {
         return p_;
@@ -2701,34 +3175,67 @@ public final class Message {
         return g_;
       }
 
-      // repeated int32 id = 4;
-      public static final int ID_FIELD_NUMBER = 4;
-      private java.util.List<java.lang.Integer> id_;
+      // repeated .Msg.InitMsg.IdAndPort idAndPort = 4;
+      public static final int IDANDPORT_FIELD_NUMBER = 4;
+      private java.util.List<Message.Msg.InitMsg.IdAndPort> idAndPort_;
       /**
-       * <code>repeated int32 id = 4;</code>
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
        */
-      public java.util.List<java.lang.Integer>
-          getIdList() {
-        return id_;
+      public java.util.List<Message.Msg.InitMsg.IdAndPort> getIdAndPortList() {
+        return idAndPort_;
       }
       /**
-       * <code>repeated int32 id = 4;</code>
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
        */
-      public int getIdCount() {
-        return id_.size();
+      public java.util.List<? extends Message.Msg.InitMsg.IdAndPortOrBuilder> 
+          getIdAndPortOrBuilderList() {
+        return idAndPort_;
       }
       /**
-       * <code>repeated int32 id = 4;</code>
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
        */
-      public int getId(int index) {
-        return id_.get(index);
+      public int getIdAndPortCount() {
+        return idAndPort_.size();
+      }
+      /**
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
+       */
+      public Message.Msg.InitMsg.IdAndPort getIdAndPort(int index) {
+        return idAndPort_.get(index);
+      }
+      /**
+       * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+       *
+       * <pre>
+       * IDs and ports of protocol participants
+       * </pre>
+       */
+      public Message.Msg.InitMsg.IdAndPortOrBuilder getIdAndPortOrBuilder(
+          int index) {
+        return idAndPort_.get(index);
       }
 
       private void initFields() {
         p_ = com.google.protobuf.ByteString.EMPTY;
         q_ = com.google.protobuf.ByteString.EMPTY;
         g_ = com.google.protobuf.ByteString.EMPTY;
-        id_ = java.util.Collections.emptyList();
+        idAndPort_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -2747,6 +3254,12 @@ public final class Message {
           memoizedIsInitialized = 0;
           return false;
         }
+        for (int i = 0; i < getIdAndPortCount(); i++) {
+          if (!getIdAndPort(i).isInitialized()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+        }
         memoizedIsInitialized = 1;
         return true;
       }
@@ -2763,8 +3276,8 @@ public final class Message {
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
           output.writeBytes(3, g_);
         }
-        for (int i = 0; i < id_.size(); i++) {
-          output.writeInt32(4, id_.get(i));
+        for (int i = 0; i < idAndPort_.size(); i++) {
+          output.writeMessage(4, idAndPort_.get(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -2787,14 +3300,9 @@ public final class Message {
           size += com.google.protobuf.CodedOutputStream
             .computeBytesSize(3, g_);
         }
-        {
-          int dataSize = 0;
-          for (int i = 0; i < id_.size(); i++) {
-            dataSize += com.google.protobuf.CodedOutputStream
-              .computeInt32SizeNoTag(id_.get(i));
-          }
-          size += dataSize;
-          size += 1 * getIdList().size();
+        for (int i = 0; i < idAndPort_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(4, idAndPort_.get(i));
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -2904,6 +3412,7 @@ public final class Message {
         }
         private void maybeForceBuilderInitialization() {
           if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            getIdAndPortFieldBuilder();
           }
         }
         private static Builder create() {
@@ -2918,8 +3427,12 @@ public final class Message {
           bitField0_ = (bitField0_ & ~0x00000002);
           g_ = com.google.protobuf.ByteString.EMPTY;
           bitField0_ = (bitField0_ & ~0x00000004);
-          id_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          if (idAndPortBuilder_ == null) {
+            idAndPort_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            idAndPortBuilder_.clear();
+          }
           return this;
         }
 
@@ -2960,11 +3473,15 @@ public final class Message {
             to_bitField0_ |= 0x00000004;
           }
           result.g_ = g_;
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
-            id_ = java.util.Collections.unmodifiableList(id_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+          if (idAndPortBuilder_ == null) {
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+              idAndPort_ = java.util.Collections.unmodifiableList(idAndPort_);
+              bitField0_ = (bitField0_ & ~0x00000008);
+            }
+            result.idAndPort_ = idAndPort_;
+          } else {
+            result.idAndPort_ = idAndPortBuilder_.build();
           }
-          result.id_ = id_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -2990,15 +3507,31 @@ public final class Message {
           if (other.hasG()) {
             setG(other.getG());
           }
-          if (!other.id_.isEmpty()) {
-            if (id_.isEmpty()) {
-              id_ = other.id_;
-              bitField0_ = (bitField0_ & ~0x00000008);
-            } else {
-              ensureIdIsMutable();
-              id_.addAll(other.id_);
+          if (idAndPortBuilder_ == null) {
+            if (!other.idAndPort_.isEmpty()) {
+              if (idAndPort_.isEmpty()) {
+                idAndPort_ = other.idAndPort_;
+                bitField0_ = (bitField0_ & ~0x00000008);
+              } else {
+                ensureIdAndPortIsMutable();
+                idAndPort_.addAll(other.idAndPort_);
+              }
+              onChanged();
             }
-            onChanged();
+          } else {
+            if (!other.idAndPort_.isEmpty()) {
+              if (idAndPortBuilder_.isEmpty()) {
+                idAndPortBuilder_.dispose();
+                idAndPortBuilder_ = null;
+                idAndPort_ = other.idAndPort_;
+                bitField0_ = (bitField0_ & ~0x00000008);
+                idAndPortBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getIdAndPortFieldBuilder() : null;
+              } else {
+                idAndPortBuilder_.addAllMessages(other.idAndPort_);
+              }
+            }
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -3016,6 +3549,12 @@ public final class Message {
           if (!hasG()) {
             
             return false;
+          }
+          for (int i = 0; i < getIdAndPortCount(); i++) {
+            if (!getIdAndPort(i).isInitialized()) {
+              
+              return false;
+            }
           }
           return true;
         }
@@ -3043,18 +3582,30 @@ public final class Message {
         private com.google.protobuf.ByteString p_ = com.google.protobuf.ByteString.EMPTY;
         /**
          * <code>required bytes p = 1;</code>
+         *
+         * <pre>
+         *finite field parameters
+         * </pre>
          */
         public boolean hasP() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
          * <code>required bytes p = 1;</code>
+         *
+         * <pre>
+         *finite field parameters
+         * </pre>
          */
         public com.google.protobuf.ByteString getP() {
           return p_;
         }
         /**
          * <code>required bytes p = 1;</code>
+         *
+         * <pre>
+         *finite field parameters
+         * </pre>
          */
         public Builder setP(com.google.protobuf.ByteString value) {
           if (value == null) {
@@ -3067,6 +3618,10 @@ public final class Message {
         }
         /**
          * <code>required bytes p = 1;</code>
+         *
+         * <pre>
+         *finite field parameters
+         * </pre>
          */
         public Builder clearP() {
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -3147,70 +3702,316 @@ public final class Message {
           return this;
         }
 
-        // repeated int32 id = 4;
-        private java.util.List<java.lang.Integer> id_ = java.util.Collections.emptyList();
-        private void ensureIdIsMutable() {
+        // repeated .Msg.InitMsg.IdAndPort idAndPort = 4;
+        private java.util.List<Message.Msg.InitMsg.IdAndPort> idAndPort_ =
+          java.util.Collections.emptyList();
+        private void ensureIdAndPortIsMutable() {
           if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-            id_ = new java.util.ArrayList<java.lang.Integer>(id_);
+            idAndPort_ = new java.util.ArrayList<Message.Msg.InitMsg.IdAndPort>(idAndPort_);
             bitField0_ |= 0x00000008;
            }
         }
+
+        private com.google.protobuf.RepeatedFieldBuilder<
+            Message.Msg.InitMsg.IdAndPort, Message.Msg.InitMsg.IdAndPort.Builder, Message.Msg.InitMsg.IdAndPortOrBuilder> idAndPortBuilder_;
+
         /**
-         * <code>repeated int32 id = 4;</code>
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
          */
-        public java.util.List<java.lang.Integer>
-            getIdList() {
-          return java.util.Collections.unmodifiableList(id_);
+        public java.util.List<Message.Msg.InitMsg.IdAndPort> getIdAndPortList() {
+          if (idAndPortBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(idAndPort_);
+          } else {
+            return idAndPortBuilder_.getMessageList();
+          }
         }
         /**
-         * <code>repeated int32 id = 4;</code>
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
          */
-        public int getIdCount() {
-          return id_.size();
+        public int getIdAndPortCount() {
+          if (idAndPortBuilder_ == null) {
+            return idAndPort_.size();
+          } else {
+            return idAndPortBuilder_.getCount();
+          }
         }
         /**
-         * <code>repeated int32 id = 4;</code>
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
          */
-        public int getId(int index) {
-          return id_.get(index);
+        public Message.Msg.InitMsg.IdAndPort getIdAndPort(int index) {
+          if (idAndPortBuilder_ == null) {
+            return idAndPort_.get(index);
+          } else {
+            return idAndPortBuilder_.getMessage(index);
+          }
         }
         /**
-         * <code>repeated int32 id = 4;</code>
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
          */
-        public Builder setId(
-            int index, int value) {
-          ensureIdIsMutable();
-          id_.set(index, value);
-          onChanged();
+        public Builder setIdAndPort(
+            int index, Message.Msg.InitMsg.IdAndPort value) {
+          if (idAndPortBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureIdAndPortIsMutable();
+            idAndPort_.set(index, value);
+            onChanged();
+          } else {
+            idAndPortBuilder_.setMessage(index, value);
+          }
           return this;
         }
         /**
-         * <code>repeated int32 id = 4;</code>
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
          */
-        public Builder addId(int value) {
-          ensureIdIsMutable();
-          id_.add(value);
-          onChanged();
+        public Builder setIdAndPort(
+            int index, Message.Msg.InitMsg.IdAndPort.Builder builderForValue) {
+          if (idAndPortBuilder_ == null) {
+            ensureIdAndPortIsMutable();
+            idAndPort_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            idAndPortBuilder_.setMessage(index, builderForValue.build());
+          }
           return this;
         }
         /**
-         * <code>repeated int32 id = 4;</code>
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
          */
-        public Builder addAllId(
-            java.lang.Iterable<? extends java.lang.Integer> values) {
-          ensureIdIsMutable();
-          super.addAll(values, id_);
-          onChanged();
+        public Builder addIdAndPort(Message.Msg.InitMsg.IdAndPort value) {
+          if (idAndPortBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureIdAndPortIsMutable();
+            idAndPort_.add(value);
+            onChanged();
+          } else {
+            idAndPortBuilder_.addMessage(value);
+          }
           return this;
         }
         /**
-         * <code>repeated int32 id = 4;</code>
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
          */
-        public Builder clearId() {
-          id_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
-          onChanged();
+        public Builder addIdAndPort(
+            int index, Message.Msg.InitMsg.IdAndPort value) {
+          if (idAndPortBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureIdAndPortIsMutable();
+            idAndPort_.add(index, value);
+            onChanged();
+          } else {
+            idAndPortBuilder_.addMessage(index, value);
+          }
           return this;
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Builder addIdAndPort(
+            Message.Msg.InitMsg.IdAndPort.Builder builderForValue) {
+          if (idAndPortBuilder_ == null) {
+            ensureIdAndPortIsMutable();
+            idAndPort_.add(builderForValue.build());
+            onChanged();
+          } else {
+            idAndPortBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Builder addIdAndPort(
+            int index, Message.Msg.InitMsg.IdAndPort.Builder builderForValue) {
+          if (idAndPortBuilder_ == null) {
+            ensureIdAndPortIsMutable();
+            idAndPort_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            idAndPortBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Builder addAllIdAndPort(
+            java.lang.Iterable<? extends Message.Msg.InitMsg.IdAndPort> values) {
+          if (idAndPortBuilder_ == null) {
+            ensureIdAndPortIsMutable();
+            super.addAll(values, idAndPort_);
+            onChanged();
+          } else {
+            idAndPortBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Builder clearIdAndPort() {
+          if (idAndPortBuilder_ == null) {
+            idAndPort_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000008);
+            onChanged();
+          } else {
+            idAndPortBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Builder removeIdAndPort(int index) {
+          if (idAndPortBuilder_ == null) {
+            ensureIdAndPortIsMutable();
+            idAndPort_.remove(index);
+            onChanged();
+          } else {
+            idAndPortBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Message.Msg.InitMsg.IdAndPort.Builder getIdAndPortBuilder(
+            int index) {
+          return getIdAndPortFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Message.Msg.InitMsg.IdAndPortOrBuilder getIdAndPortOrBuilder(
+            int index) {
+          if (idAndPortBuilder_ == null) {
+            return idAndPort_.get(index);  } else {
+            return idAndPortBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public java.util.List<? extends Message.Msg.InitMsg.IdAndPortOrBuilder> 
+             getIdAndPortOrBuilderList() {
+          if (idAndPortBuilder_ != null) {
+            return idAndPortBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(idAndPort_);
+          }
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Message.Msg.InitMsg.IdAndPort.Builder addIdAndPortBuilder() {
+          return getIdAndPortFieldBuilder().addBuilder(
+              Message.Msg.InitMsg.IdAndPort.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public Message.Msg.InitMsg.IdAndPort.Builder addIdAndPortBuilder(
+            int index) {
+          return getIdAndPortFieldBuilder().addBuilder(
+              index, Message.Msg.InitMsg.IdAndPort.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .Msg.InitMsg.IdAndPort idAndPort = 4;</code>
+         *
+         * <pre>
+         * IDs and ports of protocol participants
+         * </pre>
+         */
+        public java.util.List<Message.Msg.InitMsg.IdAndPort.Builder> 
+             getIdAndPortBuilderList() {
+          return getIdAndPortFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            Message.Msg.InitMsg.IdAndPort, Message.Msg.InitMsg.IdAndPort.Builder, Message.Msg.InitMsg.IdAndPortOrBuilder> 
+            getIdAndPortFieldBuilder() {
+          if (idAndPortBuilder_ == null) {
+            idAndPortBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                Message.Msg.InitMsg.IdAndPort, Message.Msg.InitMsg.IdAndPort.Builder, Message.Msg.InitMsg.IdAndPortOrBuilder>(
+                    idAndPort_,
+                    ((bitField0_ & 0x00000008) == 0x00000008),
+                    getParentForChildren(),
+                    isClean());
+            idAndPort_ = null;
+          }
+          return idAndPortBuilder_;
         }
 
         // @@protoc_insertion_point(builder_scope:Msg.InitMsg)
@@ -3224,83 +4025,704 @@ public final class Message {
       // @@protoc_insertion_point(class_scope:Msg.InitMsg)
     }
 
+    public interface JoiningOrBuilder
+        extends com.google.protobuf.MessageOrBuilder {
+
+      // required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;
+      /**
+       * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+       */
+      boolean hasKeyAgreementPart1();
+      /**
+       * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+       */
+      Message.Msg.KeyAgreementPart1 getKeyAgreementPart1();
+      /**
+       * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+       */
+      Message.Msg.KeyAgreementPart1OrBuilder getKeyAgreementPart1OrBuilder();
+
+      // required int32 port = 2;
+      /**
+       * <code>required int32 port = 2;</code>
+       *
+       * <pre>
+       * the new member's port
+       * </pre>
+       */
+      boolean hasPort();
+      /**
+       * <code>required int32 port = 2;</code>
+       *
+       * <pre>
+       * the new member's port
+       * </pre>
+       */
+      int getPort();
+    }
+    /**
+     * Protobuf type {@code Msg.Joining}
+     */
+    public static final class Joining extends
+        com.google.protobuf.GeneratedMessage
+        implements JoiningOrBuilder {
+      // Use Joining.newBuilder() to construct.
+      private Joining(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+        super(builder);
+        this.unknownFields = builder.getUnknownFields();
+      }
+      private Joining(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+      private static final Joining defaultInstance;
+      public static Joining getDefaultInstance() {
+        return defaultInstance;
+      }
+
+      public Joining getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+
+      private final com.google.protobuf.UnknownFieldSet unknownFields;
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+          getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Joining(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        initFields();
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 10: {
+                Message.Msg.KeyAgreementPart1.Builder subBuilder = null;
+                if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                  subBuilder = keyAgreementPart1_.toBuilder();
+                }
+                keyAgreementPart1_ = input.readMessage(Message.Msg.KeyAgreementPart1.PARSER, extensionRegistry);
+                if (subBuilder != null) {
+                  subBuilder.mergeFrom(keyAgreementPart1_);
+                  keyAgreementPart1_ = subBuilder.buildPartial();
+                }
+                bitField0_ |= 0x00000001;
+                break;
+              }
+              case 16: {
+                bitField0_ |= 0x00000002;
+                port_ = input.readInt32();
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e.getMessage()).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Message.internal_static_Msg_Joining_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Message.internal_static_Msg_Joining_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Message.Msg.Joining.class, Message.Msg.Joining.Builder.class);
+      }
+
+      public static com.google.protobuf.Parser<Joining> PARSER =
+          new com.google.protobuf.AbstractParser<Joining>() {
+        public Joining parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Joining(input, extensionRegistry);
+        }
+      };
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Joining> getParserForType() {
+        return PARSER;
+      }
+
+      private int bitField0_;
+      // required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;
+      public static final int KEYAGREEMENTPART1_FIELD_NUMBER = 1;
+      private Message.Msg.KeyAgreementPart1 keyAgreementPart1_;
+      /**
+       * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+       */
+      public boolean hasKeyAgreementPart1() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+       */
+      public Message.Msg.KeyAgreementPart1 getKeyAgreementPart1() {
+        return keyAgreementPart1_;
+      }
+      /**
+       * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+       */
+      public Message.Msg.KeyAgreementPart1OrBuilder getKeyAgreementPart1OrBuilder() {
+        return keyAgreementPart1_;
+      }
+
+      // required int32 port = 2;
+      public static final int PORT_FIELD_NUMBER = 2;
+      private int port_;
+      /**
+       * <code>required int32 port = 2;</code>
+       *
+       * <pre>
+       * the new member's port
+       * </pre>
+       */
+      public boolean hasPort() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 port = 2;</code>
+       *
+       * <pre>
+       * the new member's port
+       * </pre>
+       */
+      public int getPort() {
+        return port_;
+      }
+
+      private void initFields() {
+        keyAgreementPart1_ = Message.Msg.KeyAgreementPart1.getDefaultInstance();
+        port_ = 0;
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized != -1) return isInitialized == 1;
+
+        if (!hasKeyAgreementPart1()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!hasPort()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!getKeyAgreementPart1().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeMessage(1, keyAgreementPart1_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeInt32(2, port_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, keyAgreementPart1_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(2, port_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+
+      public static Message.Msg.Joining parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static Message.Msg.Joining parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static Message.Msg.Joining parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static Message.Msg.Joining parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static Message.Msg.Joining parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static Message.Msg.Joining parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+      public static Message.Msg.Joining parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input);
+      }
+      public static Message.Msg.Joining parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      }
+      public static Message.Msg.Joining parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static Message.Msg.Joining parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(Message.Msg.Joining prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code Msg.Joining}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder>
+         implements Message.Msg.JoiningOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return Message.internal_static_Msg_Joining_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return Message.internal_static_Msg_Joining_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  Message.Msg.Joining.class, Message.Msg.Joining.Builder.class);
+        }
+
+        // Construct using Message.Msg.Joining.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            getKeyAgreementPart1FieldBuilder();
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+
+        public Builder clear() {
+          super.clear();
+          if (keyAgreementPart1Builder_ == null) {
+            keyAgreementPart1_ = Message.Msg.KeyAgreementPart1.getDefaultInstance();
+          } else {
+            keyAgreementPart1Builder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00000001);
+          port_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000002);
+          return this;
+        }
+
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return Message.internal_static_Msg_Joining_descriptor;
+        }
+
+        public Message.Msg.Joining getDefaultInstanceForType() {
+          return Message.Msg.Joining.getDefaultInstance();
+        }
+
+        public Message.Msg.Joining build() {
+          Message.Msg.Joining result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public Message.Msg.Joining buildPartial() {
+          Message.Msg.Joining result = new Message.Msg.Joining(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          if (keyAgreementPart1Builder_ == null) {
+            result.keyAgreementPart1_ = keyAgreementPart1_;
+          } else {
+            result.keyAgreementPart1_ = keyAgreementPart1Builder_.build();
+          }
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          result.port_ = port_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof Message.Msg.Joining) {
+            return mergeFrom((Message.Msg.Joining)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(Message.Msg.Joining other) {
+          if (other == Message.Msg.Joining.getDefaultInstance()) return this;
+          if (other.hasKeyAgreementPart1()) {
+            mergeKeyAgreementPart1(other.getKeyAgreementPart1());
+          }
+          if (other.hasPort()) {
+            setPort(other.getPort());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          if (!hasKeyAgreementPart1()) {
+            
+            return false;
+          }
+          if (!hasPort()) {
+            
+            return false;
+          }
+          if (!getKeyAgreementPart1().isInitialized()) {
+            
+            return false;
+          }
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          Message.Msg.Joining parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (Message.Msg.Joining) e.getUnfinishedMessage();
+            throw e;
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        // required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;
+        private Message.Msg.KeyAgreementPart1 keyAgreementPart1_ = Message.Msg.KeyAgreementPart1.getDefaultInstance();
+        private com.google.protobuf.SingleFieldBuilder<
+            Message.Msg.KeyAgreementPart1, Message.Msg.KeyAgreementPart1.Builder, Message.Msg.KeyAgreementPart1OrBuilder> keyAgreementPart1Builder_;
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public boolean hasKeyAgreementPart1() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public Message.Msg.KeyAgreementPart1 getKeyAgreementPart1() {
+          if (keyAgreementPart1Builder_ == null) {
+            return keyAgreementPart1_;
+          } else {
+            return keyAgreementPart1Builder_.getMessage();
+          }
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public Builder setKeyAgreementPart1(Message.Msg.KeyAgreementPart1 value) {
+          if (keyAgreementPart1Builder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            keyAgreementPart1_ = value;
+            onChanged();
+          } else {
+            keyAgreementPart1Builder_.setMessage(value);
+          }
+          bitField0_ |= 0x00000001;
+          return this;
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public Builder setKeyAgreementPart1(
+            Message.Msg.KeyAgreementPart1.Builder builderForValue) {
+          if (keyAgreementPart1Builder_ == null) {
+            keyAgreementPart1_ = builderForValue.build();
+            onChanged();
+          } else {
+            keyAgreementPart1Builder_.setMessage(builderForValue.build());
+          }
+          bitField0_ |= 0x00000001;
+          return this;
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public Builder mergeKeyAgreementPart1(Message.Msg.KeyAgreementPart1 value) {
+          if (keyAgreementPart1Builder_ == null) {
+            if (((bitField0_ & 0x00000001) == 0x00000001) &&
+                keyAgreementPart1_ != Message.Msg.KeyAgreementPart1.getDefaultInstance()) {
+              keyAgreementPart1_ =
+                Message.Msg.KeyAgreementPart1.newBuilder(keyAgreementPart1_).mergeFrom(value).buildPartial();
+            } else {
+              keyAgreementPart1_ = value;
+            }
+            onChanged();
+          } else {
+            keyAgreementPart1Builder_.mergeFrom(value);
+          }
+          bitField0_ |= 0x00000001;
+          return this;
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public Builder clearKeyAgreementPart1() {
+          if (keyAgreementPart1Builder_ == null) {
+            keyAgreementPart1_ = Message.Msg.KeyAgreementPart1.getDefaultInstance();
+            onChanged();
+          } else {
+            keyAgreementPart1Builder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00000001);
+          return this;
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public Message.Msg.KeyAgreementPart1.Builder getKeyAgreementPart1Builder() {
+          bitField0_ |= 0x00000001;
+          onChanged();
+          return getKeyAgreementPart1FieldBuilder().getBuilder();
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        public Message.Msg.KeyAgreementPart1OrBuilder getKeyAgreementPart1OrBuilder() {
+          if (keyAgreementPart1Builder_ != null) {
+            return keyAgreementPart1Builder_.getMessageOrBuilder();
+          } else {
+            return keyAgreementPart1_;
+          }
+        }
+        /**
+         * <code>required .Msg.KeyAgreementPart1 keyAgreementPart1 = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilder<
+            Message.Msg.KeyAgreementPart1, Message.Msg.KeyAgreementPart1.Builder, Message.Msg.KeyAgreementPart1OrBuilder> 
+            getKeyAgreementPart1FieldBuilder() {
+          if (keyAgreementPart1Builder_ == null) {
+            keyAgreementPart1Builder_ = new com.google.protobuf.SingleFieldBuilder<
+                Message.Msg.KeyAgreementPart1, Message.Msg.KeyAgreementPart1.Builder, Message.Msg.KeyAgreementPart1OrBuilder>(
+                    keyAgreementPart1_,
+                    getParentForChildren(),
+                    isClean());
+            keyAgreementPart1_ = null;
+          }
+          return keyAgreementPart1Builder_;
+        }
+
+        // required int32 port = 2;
+        private int port_ ;
+        /**
+         * <code>required int32 port = 2;</code>
+         *
+         * <pre>
+         * the new member's port
+         * </pre>
+         */
+        public boolean hasPort() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>required int32 port = 2;</code>
+         *
+         * <pre>
+         * the new member's port
+         * </pre>
+         */
+        public int getPort() {
+          return port_;
+        }
+        /**
+         * <code>required int32 port = 2;</code>
+         *
+         * <pre>
+         * the new member's port
+         * </pre>
+         */
+        public Builder setPort(int value) {
+          bitField0_ |= 0x00000002;
+          port_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required int32 port = 2;</code>
+         *
+         * <pre>
+         * the new member's port
+         * </pre>
+         */
+        public Builder clearPort() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          port_ = 0;
+          onChanged();
+          return this;
+        }
+
+        // @@protoc_insertion_point(builder_scope:Msg.Joining)
+      }
+
+      static {
+        defaultInstance = new Joining(true);
+        defaultInstance.initFields();
+      }
+
+      // @@protoc_insertion_point(class_scope:Msg.Joining)
+    }
+
     public interface AddParticipantOrBuilder
         extends com.google.protobuf.MessageOrBuilder {
 
-      // required int32 nextPeriod = 4;
+      // required int32 nextPeriod = 1;
       /**
-       * <code>required int32 nextPeriod = 4;</code>
+       * <code>required int32 nextPeriod = 1;</code>
        */
       boolean hasNextPeriod();
       /**
-       * <code>required int32 nextPeriod = 4;</code>
+       * <code>required int32 nextPeriod = 1;</code>
        */
       int getNextPeriod();
 
-      // required bytes p = 1;
+      // required .Msg.InitMsg init = 2;
       /**
-       * <code>required bytes p = 1;</code>
+       * <code>required .Msg.InitMsg init = 2;</code>
        */
-      boolean hasP();
+      boolean hasInit();
       /**
-       * <code>required bytes p = 1;</code>
+       * <code>required .Msg.InitMsg init = 2;</code>
        */
-      com.google.protobuf.ByteString getP();
+      Message.Msg.InitMsg getInit();
+      /**
+       * <code>required .Msg.InitMsg init = 2;</code>
+       */
+      Message.Msg.InitMsgOrBuilder getInitOrBuilder();
 
-      // required bytes q = 2;
+      // repeated .Msg.AddParticipant.PublicData publicData = 3;
       /**
-       * <code>required bytes q = 2;</code>
-       */
-      boolean hasQ();
-      /**
-       * <code>required bytes q = 2;</code>
-       */
-      com.google.protobuf.ByteString getQ();
-
-      // required bytes g = 3;
-      /**
-       * <code>required bytes g = 3;</code>
-       */
-      boolean hasG();
-      /**
-       * <code>required bytes g = 3;</code>
-       */
-      com.google.protobuf.ByteString getG();
-
-      // repeated .Msg.AddParticipant.PublicData publicData = 5;
-      /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       java.util.List<Message.Msg.AddParticipant.PublicData> 
           getPublicDataList();
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       Message.Msg.AddParticipant.PublicData getPublicData(int index);
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       int getPublicDataCount();
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       java.util.List<? extends Message.Msg.AddParticipant.PublicDataOrBuilder> 
           getPublicDataOrBuilderList();
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       Message.Msg.AddParticipant.PublicDataOrBuilder getPublicDataOrBuilder(
           int index);
     }
     /**
      * Protobuf type {@code Msg.AddParticipant}
-     *
-     * <pre>
-     * message Joining{
-     *required KeyAgreementPart1 keyAgreementPart1 = 1;
-     *required KeyAgreementPart2 keyAgreementPart2 = 2;
-     *}
-     * </pre>
      */
     public static final class AddParticipant extends
         com.google.protobuf.GeneratedMessage
@@ -3350,30 +4772,28 @@ public final class Message {
                 }
                 break;
               }
-              case 10: {
-                bitField0_ |= 0x00000002;
-                p_ = input.readBytes();
-                break;
-              }
-              case 18: {
-                bitField0_ |= 0x00000004;
-                q_ = input.readBytes();
-                break;
-              }
-              case 26: {
-                bitField0_ |= 0x00000008;
-                g_ = input.readBytes();
-                break;
-              }
-              case 32: {
+              case 8: {
                 bitField0_ |= 0x00000001;
                 nextPeriod_ = input.readInt32();
                 break;
               }
-              case 42: {
-                if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+              case 18: {
+                Message.Msg.InitMsg.Builder subBuilder = null;
+                if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                  subBuilder = init_.toBuilder();
+                }
+                init_ = input.readMessage(Message.Msg.InitMsg.PARSER, extensionRegistry);
+                if (subBuilder != null) {
+                  subBuilder.mergeFrom(init_);
+                  init_ = subBuilder.buildPartial();
+                }
+                bitField0_ |= 0x00000002;
+                break;
+              }
+              case 26: {
+                if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                   publicData_ = new java.util.ArrayList<Message.Msg.AddParticipant.PublicData>();
-                  mutable_bitField0_ |= 0x00000010;
+                  mutable_bitField0_ |= 0x00000004;
                 }
                 publicData_.add(input.readMessage(Message.Msg.AddParticipant.PublicData.PARSER, extensionRegistry));
                 break;
@@ -3386,7 +4806,7 @@ public final class Message {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
             publicData_ = java.util.Collections.unmodifiableList(publicData_);
           }
           this.unknownFields = unknownFields.build();
@@ -3436,34 +4856,26 @@ public final class Message {
         // required bytes pubKeyY = 2;
         /**
          * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
          */
         boolean hasPubKeyY();
         /**
          * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
          */
         com.google.protobuf.ByteString getPubKeyY();
 
-        // repeated bytes pubValuesGeneratedFromCoefficients = 3;
+        // repeated bytes pubPolynomial = 3;
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+         * <code>repeated bytes pubPolynomial = 3;</code>
          */
-        java.util.List<com.google.protobuf.ByteString> getPubValuesGeneratedFromCoefficientsList();
+        java.util.List<com.google.protobuf.ByteString> getPubPolynomialList();
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+         * <code>repeated bytes pubPolynomial = 3;</code>
          */
-        int getPubValuesGeneratedFromCoefficientsCount();
+        int getPubPolynomialCount();
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+         * <code>repeated bytes pubPolynomial = 3;</code>
          */
-        com.google.protobuf.ByteString getPubValuesGeneratedFromCoefficients(int index);
+        com.google.protobuf.ByteString getPubPolynomial(int index);
       }
       /**
        * Protobuf type {@code Msg.AddParticipant.PublicData}
@@ -3528,10 +4940,10 @@ public final class Message {
                 }
                 case 26: {
                   if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-                    pubValuesGeneratedFromCoefficients_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+                    pubPolynomial_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
                     mutable_bitField0_ |= 0x00000004;
                   }
-                  pubValuesGeneratedFromCoefficients_.add(input.readBytes());
+                  pubPolynomial_.add(input.readBytes());
                   break;
                 }
               }
@@ -3543,7 +4955,7 @@ public final class Message {
                 e.getMessage()).setUnfinishedMessage(this);
           } finally {
             if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-              pubValuesGeneratedFromCoefficients_ = java.util.Collections.unmodifiableList(pubValuesGeneratedFromCoefficients_);
+              pubPolynomial_ = java.util.Collections.unmodifiableList(pubPolynomial_);
             }
             this.unknownFields = unknownFields.build();
             makeExtensionsImmutable();
@@ -3598,52 +5010,44 @@ public final class Message {
         private com.google.protobuf.ByteString pubKeyY_;
         /**
          * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
          */
         public boolean hasPubKeyY() {
           return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
          * <code>required bytes pubKeyY = 2;</code>
-         *
-         * <pre>
-         * y = g^x mod p, where x is the sender`s long-term private key
-         * </pre>
          */
         public com.google.protobuf.ByteString getPubKeyY() {
           return pubKeyY_;
         }
 
-        // repeated bytes pubValuesGeneratedFromCoefficients = 3;
-        public static final int PUBVALUESGENERATEDFROMCOEFFICIENTS_FIELD_NUMBER = 3;
-        private java.util.List<com.google.protobuf.ByteString> pubValuesGeneratedFromCoefficients_;
+        // repeated bytes pubPolynomial = 3;
+        public static final int PUBPOLYNOMIAL_FIELD_NUMBER = 3;
+        private java.util.List<com.google.protobuf.ByteString> pubPolynomial_;
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+         * <code>repeated bytes pubPolynomial = 3;</code>
          */
         public java.util.List<com.google.protobuf.ByteString>
-            getPubValuesGeneratedFromCoefficientsList() {
-          return pubValuesGeneratedFromCoefficients_;
+            getPubPolynomialList() {
+          return pubPolynomial_;
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+         * <code>repeated bytes pubPolynomial = 3;</code>
          */
-        public int getPubValuesGeneratedFromCoefficientsCount() {
-          return pubValuesGeneratedFromCoefficients_.size();
+        public int getPubPolynomialCount() {
+          return pubPolynomial_.size();
         }
         /**
-         * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+         * <code>repeated bytes pubPolynomial = 3;</code>
          */
-        public com.google.protobuf.ByteString getPubValuesGeneratedFromCoefficients(int index) {
-          return pubValuesGeneratedFromCoefficients_.get(index);
+        public com.google.protobuf.ByteString getPubPolynomial(int index) {
+          return pubPolynomial_.get(index);
         }
 
         private void initFields() {
           id_ = 0;
           pubKeyY_ = com.google.protobuf.ByteString.EMPTY;
-          pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
+          pubPolynomial_ = java.util.Collections.emptyList();
         }
         private byte memoizedIsInitialized = -1;
         public final boolean isInitialized() {
@@ -3671,8 +5075,8 @@ public final class Message {
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             output.writeBytes(2, pubKeyY_);
           }
-          for (int i = 0; i < pubValuesGeneratedFromCoefficients_.size(); i++) {
-            output.writeBytes(3, pubValuesGeneratedFromCoefficients_.get(i));
+          for (int i = 0; i < pubPolynomial_.size(); i++) {
+            output.writeBytes(3, pubPolynomial_.get(i));
           }
           getUnknownFields().writeTo(output);
         }
@@ -3693,12 +5097,12 @@ public final class Message {
           }
           {
             int dataSize = 0;
-            for (int i = 0; i < pubValuesGeneratedFromCoefficients_.size(); i++) {
+            for (int i = 0; i < pubPolynomial_.size(); i++) {
               dataSize += com.google.protobuf.CodedOutputStream
-                .computeBytesSizeNoTag(pubValuesGeneratedFromCoefficients_.get(i));
+                .computeBytesSizeNoTag(pubPolynomial_.get(i));
             }
             size += dataSize;
-            size += 1 * getPubValuesGeneratedFromCoefficientsList().size();
+            size += 1 * getPubPolynomialList().size();
           }
           size += getUnknownFields().getSerializedSize();
           memoizedSerializedSize = size;
@@ -3820,7 +5224,7 @@ public final class Message {
             bitField0_ = (bitField0_ & ~0x00000001);
             pubKeyY_ = com.google.protobuf.ByteString.EMPTY;
             bitField0_ = (bitField0_ & ~0x00000002);
-            pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
+            pubPolynomial_ = java.util.Collections.emptyList();
             bitField0_ = (bitField0_ & ~0x00000004);
             return this;
           }
@@ -3859,10 +5263,10 @@ public final class Message {
             }
             result.pubKeyY_ = pubKeyY_;
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-              pubValuesGeneratedFromCoefficients_ = java.util.Collections.unmodifiableList(pubValuesGeneratedFromCoefficients_);
+              pubPolynomial_ = java.util.Collections.unmodifiableList(pubPolynomial_);
               bitField0_ = (bitField0_ & ~0x00000004);
             }
-            result.pubValuesGeneratedFromCoefficients_ = pubValuesGeneratedFromCoefficients_;
+            result.pubPolynomial_ = pubPolynomial_;
             result.bitField0_ = to_bitField0_;
             onBuilt();
             return result;
@@ -3885,13 +5289,13 @@ public final class Message {
             if (other.hasPubKeyY()) {
               setPubKeyY(other.getPubKeyY());
             }
-            if (!other.pubValuesGeneratedFromCoefficients_.isEmpty()) {
-              if (pubValuesGeneratedFromCoefficients_.isEmpty()) {
-                pubValuesGeneratedFromCoefficients_ = other.pubValuesGeneratedFromCoefficients_;
+            if (!other.pubPolynomial_.isEmpty()) {
+              if (pubPolynomial_.isEmpty()) {
+                pubPolynomial_ = other.pubPolynomial_;
                 bitField0_ = (bitField0_ & ~0x00000004);
               } else {
-                ensurePubValuesGeneratedFromCoefficientsIsMutable();
-                pubValuesGeneratedFromCoefficients_.addAll(other.pubValuesGeneratedFromCoefficients_);
+                ensurePubPolynomialIsMutable();
+                pubPolynomial_.addAll(other.pubPolynomial_);
               }
               onChanged();
             }
@@ -3967,30 +5371,18 @@ public final class Message {
           private com.google.protobuf.ByteString pubKeyY_ = com.google.protobuf.ByteString.EMPTY;
           /**
            * <code>required bytes pubKeyY = 2;</code>
-           *
-           * <pre>
-           * y = g^x mod p, where x is the sender`s long-term private key
-           * </pre>
            */
           public boolean hasPubKeyY() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
           }
           /**
            * <code>required bytes pubKeyY = 2;</code>
-           *
-           * <pre>
-           * y = g^x mod p, where x is the sender`s long-term private key
-           * </pre>
            */
           public com.google.protobuf.ByteString getPubKeyY() {
             return pubKeyY_;
           }
           /**
            * <code>required bytes pubKeyY = 2;</code>
-           *
-           * <pre>
-           * y = g^x mod p, where x is the sender`s long-term private key
-           * </pre>
            */
           public Builder setPubKeyY(com.google.protobuf.ByteString value) {
             if (value == null) {
@@ -4003,10 +5395,6 @@ public final class Message {
           }
           /**
            * <code>required bytes pubKeyY = 2;</code>
-           *
-           * <pre>
-           * y = g^x mod p, where x is the sender`s long-term private key
-           * </pre>
            */
           public Builder clearPubKeyY() {
             bitField0_ = (bitField0_ & ~0x00000002);
@@ -4015,73 +5403,73 @@ public final class Message {
             return this;
           }
 
-          // repeated bytes pubValuesGeneratedFromCoefficients = 3;
-          private java.util.List<com.google.protobuf.ByteString> pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
-          private void ensurePubValuesGeneratedFromCoefficientsIsMutable() {
+          // repeated bytes pubPolynomial = 3;
+          private java.util.List<com.google.protobuf.ByteString> pubPolynomial_ = java.util.Collections.emptyList();
+          private void ensurePubPolynomialIsMutable() {
             if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-              pubValuesGeneratedFromCoefficients_ = new java.util.ArrayList<com.google.protobuf.ByteString>(pubValuesGeneratedFromCoefficients_);
+              pubPolynomial_ = new java.util.ArrayList<com.google.protobuf.ByteString>(pubPolynomial_);
               bitField0_ |= 0x00000004;
              }
           }
           /**
-           * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+           * <code>repeated bytes pubPolynomial = 3;</code>
            */
           public java.util.List<com.google.protobuf.ByteString>
-              getPubValuesGeneratedFromCoefficientsList() {
-            return java.util.Collections.unmodifiableList(pubValuesGeneratedFromCoefficients_);
+              getPubPolynomialList() {
+            return java.util.Collections.unmodifiableList(pubPolynomial_);
           }
           /**
-           * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+           * <code>repeated bytes pubPolynomial = 3;</code>
            */
-          public int getPubValuesGeneratedFromCoefficientsCount() {
-            return pubValuesGeneratedFromCoefficients_.size();
+          public int getPubPolynomialCount() {
+            return pubPolynomial_.size();
           }
           /**
-           * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+           * <code>repeated bytes pubPolynomial = 3;</code>
            */
-          public com.google.protobuf.ByteString getPubValuesGeneratedFromCoefficients(int index) {
-            return pubValuesGeneratedFromCoefficients_.get(index);
+          public com.google.protobuf.ByteString getPubPolynomial(int index) {
+            return pubPolynomial_.get(index);
           }
           /**
-           * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+           * <code>repeated bytes pubPolynomial = 3;</code>
            */
-          public Builder setPubValuesGeneratedFromCoefficients(
+          public Builder setPubPolynomial(
               int index, com.google.protobuf.ByteString value) {
             if (value == null) {
     throw new NullPointerException();
   }
-  ensurePubValuesGeneratedFromCoefficientsIsMutable();
-            pubValuesGeneratedFromCoefficients_.set(index, value);
+  ensurePubPolynomialIsMutable();
+            pubPolynomial_.set(index, value);
             onChanged();
             return this;
           }
           /**
-           * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+           * <code>repeated bytes pubPolynomial = 3;</code>
            */
-          public Builder addPubValuesGeneratedFromCoefficients(com.google.protobuf.ByteString value) {
+          public Builder addPubPolynomial(com.google.protobuf.ByteString value) {
             if (value == null) {
     throw new NullPointerException();
   }
-  ensurePubValuesGeneratedFromCoefficientsIsMutable();
-            pubValuesGeneratedFromCoefficients_.add(value);
+  ensurePubPolynomialIsMutable();
+            pubPolynomial_.add(value);
             onChanged();
             return this;
           }
           /**
-           * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+           * <code>repeated bytes pubPolynomial = 3;</code>
            */
-          public Builder addAllPubValuesGeneratedFromCoefficients(
+          public Builder addAllPubPolynomial(
               java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
-            ensurePubValuesGeneratedFromCoefficientsIsMutable();
-            super.addAll(values, pubValuesGeneratedFromCoefficients_);
+            ensurePubPolynomialIsMutable();
+            super.addAll(values, pubPolynomial_);
             onChanged();
             return this;
           }
           /**
-           * <code>repeated bytes pubValuesGeneratedFromCoefficients = 3;</code>
+           * <code>repeated bytes pubPolynomial = 3;</code>
            */
-          public Builder clearPubValuesGeneratedFromCoefficients() {
-            pubValuesGeneratedFromCoefficients_ = java.util.Collections.emptyList();
+          public Builder clearPubPolynomial() {
+            pubPolynomial_ = java.util.Collections.emptyList();
             bitField0_ = (bitField0_ & ~0x00000004);
             onChanged();
             return this;
@@ -4099,100 +5487,74 @@ public final class Message {
       }
 
       private int bitField0_;
-      // required int32 nextPeriod = 4;
-      public static final int NEXTPERIOD_FIELD_NUMBER = 4;
+      // required int32 nextPeriod = 1;
+      public static final int NEXTPERIOD_FIELD_NUMBER = 1;
       private int nextPeriod_;
       /**
-       * <code>required int32 nextPeriod = 4;</code>
+       * <code>required int32 nextPeriod = 1;</code>
        */
       public boolean hasNextPeriod() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 nextPeriod = 4;</code>
+       * <code>required int32 nextPeriod = 1;</code>
        */
       public int getNextPeriod() {
         return nextPeriod_;
       }
 
-      // required bytes p = 1;
-      public static final int P_FIELD_NUMBER = 1;
-      private com.google.protobuf.ByteString p_;
+      // required .Msg.InitMsg init = 2;
+      public static final int INIT_FIELD_NUMBER = 2;
+      private Message.Msg.InitMsg init_;
       /**
-       * <code>required bytes p = 1;</code>
+       * <code>required .Msg.InitMsg init = 2;</code>
        */
-      public boolean hasP() {
+      public boolean hasInit() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required bytes p = 1;</code>
+       * <code>required .Msg.InitMsg init = 2;</code>
        */
-      public com.google.protobuf.ByteString getP() {
-        return p_;
+      public Message.Msg.InitMsg getInit() {
+        return init_;
+      }
+      /**
+       * <code>required .Msg.InitMsg init = 2;</code>
+       */
+      public Message.Msg.InitMsgOrBuilder getInitOrBuilder() {
+        return init_;
       }
 
-      // required bytes q = 2;
-      public static final int Q_FIELD_NUMBER = 2;
-      private com.google.protobuf.ByteString q_;
-      /**
-       * <code>required bytes q = 2;</code>
-       */
-      public boolean hasQ() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required bytes q = 2;</code>
-       */
-      public com.google.protobuf.ByteString getQ() {
-        return q_;
-      }
-
-      // required bytes g = 3;
-      public static final int G_FIELD_NUMBER = 3;
-      private com.google.protobuf.ByteString g_;
-      /**
-       * <code>required bytes g = 3;</code>
-       */
-      public boolean hasG() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>required bytes g = 3;</code>
-       */
-      public com.google.protobuf.ByteString getG() {
-        return g_;
-      }
-
-      // repeated .Msg.AddParticipant.PublicData publicData = 5;
-      public static final int PUBLICDATA_FIELD_NUMBER = 5;
+      // repeated .Msg.AddParticipant.PublicData publicData = 3;
+      public static final int PUBLICDATA_FIELD_NUMBER = 3;
       private java.util.List<Message.Msg.AddParticipant.PublicData> publicData_;
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       public java.util.List<Message.Msg.AddParticipant.PublicData> getPublicDataList() {
         return publicData_;
       }
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       public java.util.List<? extends Message.Msg.AddParticipant.PublicDataOrBuilder> 
           getPublicDataOrBuilderList() {
         return publicData_;
       }
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       public int getPublicDataCount() {
         return publicData_.size();
       }
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       public Message.Msg.AddParticipant.PublicData getPublicData(int index) {
         return publicData_.get(index);
       }
       /**
-       * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+       * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
        */
       public Message.Msg.AddParticipant.PublicDataOrBuilder getPublicDataOrBuilder(
           int index) {
@@ -4201,9 +5563,7 @@ public final class Message {
 
       private void initFields() {
         nextPeriod_ = 0;
-        p_ = com.google.protobuf.ByteString.EMPTY;
-        q_ = com.google.protobuf.ByteString.EMPTY;
-        g_ = com.google.protobuf.ByteString.EMPTY;
+        init_ = Message.Msg.InitMsg.getDefaultInstance();
         publicData_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
@@ -4215,15 +5575,11 @@ public final class Message {
           memoizedIsInitialized = 0;
           return false;
         }
-        if (!hasP()) {
+        if (!hasInit()) {
           memoizedIsInitialized = 0;
           return false;
         }
-        if (!hasQ()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        if (!hasG()) {
+        if (!getInit().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -4240,20 +5596,14 @@ public final class Message {
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
         getSerializedSize();
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeBytes(1, p_);
-        }
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          output.writeBytes(2, q_);
-        }
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          output.writeBytes(3, g_);
-        }
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeInt32(4, nextPeriod_);
+          output.writeInt32(1, nextPeriod_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeMessage(2, init_);
         }
         for (int i = 0; i < publicData_.size(); i++) {
-          output.writeMessage(5, publicData_.get(i));
+          output.writeMessage(3, publicData_.get(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -4264,25 +5614,17 @@ public final class Message {
         if (size != -1) return size;
 
         size = 0;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(1, p_);
-        }
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(2, q_);
-        }
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(3, g_);
-        }
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(4, nextPeriod_);
+            .computeInt32Size(1, nextPeriod_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(2, init_);
         }
         for (int i = 0; i < publicData_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(5, publicData_.get(i));
+            .computeMessageSize(3, publicData_.get(i));
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -4364,13 +5706,6 @@ public final class Message {
       }
       /**
        * Protobuf type {@code Msg.AddParticipant}
-       *
-       * <pre>
-       * message Joining{
-       *required KeyAgreementPart1 keyAgreementPart1 = 1;
-       *required KeyAgreementPart2 keyAgreementPart2 = 2;
-       *}
-       * </pre>
        */
       public static final class Builder extends
           com.google.protobuf.GeneratedMessage.Builder<Builder>
@@ -4399,6 +5734,7 @@ public final class Message {
         }
         private void maybeForceBuilderInitialization() {
           if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            getInitFieldBuilder();
             getPublicDataFieldBuilder();
           }
         }
@@ -4410,15 +5746,15 @@ public final class Message {
           super.clear();
           nextPeriod_ = 0;
           bitField0_ = (bitField0_ & ~0x00000001);
-          p_ = com.google.protobuf.ByteString.EMPTY;
+          if (initBuilder_ == null) {
+            init_ = Message.Msg.InitMsg.getDefaultInstance();
+          } else {
+            initBuilder_.clear();
+          }
           bitField0_ = (bitField0_ & ~0x00000002);
-          q_ = com.google.protobuf.ByteString.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000004);
-          g_ = com.google.protobuf.ByteString.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000008);
           if (publicDataBuilder_ == null) {
             publicData_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000004);
           } else {
             publicDataBuilder_.clear();
           }
@@ -4457,19 +5793,15 @@ public final class Message {
           if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
             to_bitField0_ |= 0x00000002;
           }
-          result.p_ = p_;
-          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-            to_bitField0_ |= 0x00000004;
+          if (initBuilder_ == null) {
+            result.init_ = init_;
+          } else {
+            result.init_ = initBuilder_.build();
           }
-          result.q_ = q_;
-          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-            to_bitField0_ |= 0x00000008;
-          }
-          result.g_ = g_;
           if (publicDataBuilder_ == null) {
-            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
               publicData_ = java.util.Collections.unmodifiableList(publicData_);
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000004);
             }
             result.publicData_ = publicData_;
           } else {
@@ -4494,20 +5826,14 @@ public final class Message {
           if (other.hasNextPeriod()) {
             setNextPeriod(other.getNextPeriod());
           }
-          if (other.hasP()) {
-            setP(other.getP());
-          }
-          if (other.hasQ()) {
-            setQ(other.getQ());
-          }
-          if (other.hasG()) {
-            setG(other.getG());
+          if (other.hasInit()) {
+            mergeInit(other.getInit());
           }
           if (publicDataBuilder_ == null) {
             if (!other.publicData_.isEmpty()) {
               if (publicData_.isEmpty()) {
                 publicData_ = other.publicData_;
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000004);
               } else {
                 ensurePublicDataIsMutable();
                 publicData_.addAll(other.publicData_);
@@ -4520,7 +5846,7 @@ public final class Message {
                 publicDataBuilder_.dispose();
                 publicDataBuilder_ = null;
                 publicData_ = other.publicData_;
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000004);
                 publicDataBuilder_ = 
                   com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                      getPublicDataFieldBuilder() : null;
@@ -4538,15 +5864,11 @@ public final class Message {
             
             return false;
           }
-          if (!hasP()) {
+          if (!hasInit()) {
             
             return false;
           }
-          if (!hasQ()) {
-            
-            return false;
-          }
-          if (!hasG()) {
+          if (!getInit().isInitialized()) {
             
             return false;
           }
@@ -4578,22 +5900,22 @@ public final class Message {
         }
         private int bitField0_;
 
-        // required int32 nextPeriod = 4;
+        // required int32 nextPeriod = 1;
         private int nextPeriod_ ;
         /**
-         * <code>required int32 nextPeriod = 4;</code>
+         * <code>required int32 nextPeriod = 1;</code>
          */
         public boolean hasNextPeriod() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required int32 nextPeriod = 4;</code>
+         * <code>required int32 nextPeriod = 1;</code>
          */
         public int getNextPeriod() {
           return nextPeriod_;
         }
         /**
-         * <code>required int32 nextPeriod = 4;</code>
+         * <code>required int32 nextPeriod = 1;</code>
          */
         public Builder setNextPeriod(int value) {
           bitField0_ |= 0x00000001;
@@ -4602,7 +5924,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>required int32 nextPeriod = 4;</code>
+         * <code>required int32 nextPeriod = 1;</code>
          */
         public Builder clearNextPeriod() {
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -4611,121 +5933,130 @@ public final class Message {
           return this;
         }
 
-        // required bytes p = 1;
-        private com.google.protobuf.ByteString p_ = com.google.protobuf.ByteString.EMPTY;
+        // required .Msg.InitMsg init = 2;
+        private Message.Msg.InitMsg init_ = Message.Msg.InitMsg.getDefaultInstance();
+        private com.google.protobuf.SingleFieldBuilder<
+            Message.Msg.InitMsg, Message.Msg.InitMsg.Builder, Message.Msg.InitMsgOrBuilder> initBuilder_;
         /**
-         * <code>required bytes p = 1;</code>
+         * <code>required .Msg.InitMsg init = 2;</code>
          */
-        public boolean hasP() {
+        public boolean hasInit() {
           return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
-         * <code>required bytes p = 1;</code>
+         * <code>required .Msg.InitMsg init = 2;</code>
          */
-        public com.google.protobuf.ByteString getP() {
-          return p_;
+        public Message.Msg.InitMsg getInit() {
+          if (initBuilder_ == null) {
+            return init_;
+          } else {
+            return initBuilder_.getMessage();
+          }
         }
         /**
-         * <code>required bytes p = 1;</code>
+         * <code>required .Msg.InitMsg init = 2;</code>
          */
-        public Builder setP(com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-          p_ = value;
-          onChanged();
+        public Builder setInit(Message.Msg.InitMsg value) {
+          if (initBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            init_ = value;
+            onChanged();
+          } else {
+            initBuilder_.setMessage(value);
+          }
+          bitField0_ |= 0x00000002;
           return this;
         }
         /**
-         * <code>required bytes p = 1;</code>
+         * <code>required .Msg.InitMsg init = 2;</code>
          */
-        public Builder clearP() {
+        public Builder setInit(
+            Message.Msg.InitMsg.Builder builderForValue) {
+          if (initBuilder_ == null) {
+            init_ = builderForValue.build();
+            onChanged();
+          } else {
+            initBuilder_.setMessage(builderForValue.build());
+          }
+          bitField0_ |= 0x00000002;
+          return this;
+        }
+        /**
+         * <code>required .Msg.InitMsg init = 2;</code>
+         */
+        public Builder mergeInit(Message.Msg.InitMsg value) {
+          if (initBuilder_ == null) {
+            if (((bitField0_ & 0x00000002) == 0x00000002) &&
+                init_ != Message.Msg.InitMsg.getDefaultInstance()) {
+              init_ =
+                Message.Msg.InitMsg.newBuilder(init_).mergeFrom(value).buildPartial();
+            } else {
+              init_ = value;
+            }
+            onChanged();
+          } else {
+            initBuilder_.mergeFrom(value);
+          }
+          bitField0_ |= 0x00000002;
+          return this;
+        }
+        /**
+         * <code>required .Msg.InitMsg init = 2;</code>
+         */
+        public Builder clearInit() {
+          if (initBuilder_ == null) {
+            init_ = Message.Msg.InitMsg.getDefaultInstance();
+            onChanged();
+          } else {
+            initBuilder_.clear();
+          }
           bitField0_ = (bitField0_ & ~0x00000002);
-          p_ = getDefaultInstance().getP();
-          onChanged();
           return this;
+        }
+        /**
+         * <code>required .Msg.InitMsg init = 2;</code>
+         */
+        public Message.Msg.InitMsg.Builder getInitBuilder() {
+          bitField0_ |= 0x00000002;
+          onChanged();
+          return getInitFieldBuilder().getBuilder();
+        }
+        /**
+         * <code>required .Msg.InitMsg init = 2;</code>
+         */
+        public Message.Msg.InitMsgOrBuilder getInitOrBuilder() {
+          if (initBuilder_ != null) {
+            return initBuilder_.getMessageOrBuilder();
+          } else {
+            return init_;
+          }
+        }
+        /**
+         * <code>required .Msg.InitMsg init = 2;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilder<
+            Message.Msg.InitMsg, Message.Msg.InitMsg.Builder, Message.Msg.InitMsgOrBuilder> 
+            getInitFieldBuilder() {
+          if (initBuilder_ == null) {
+            initBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                Message.Msg.InitMsg, Message.Msg.InitMsg.Builder, Message.Msg.InitMsgOrBuilder>(
+                    init_,
+                    getParentForChildren(),
+                    isClean());
+            init_ = null;
+          }
+          return initBuilder_;
         }
 
-        // required bytes q = 2;
-        private com.google.protobuf.ByteString q_ = com.google.protobuf.ByteString.EMPTY;
-        /**
-         * <code>required bytes q = 2;</code>
-         */
-        public boolean hasQ() {
-          return ((bitField0_ & 0x00000004) == 0x00000004);
-        }
-        /**
-         * <code>required bytes q = 2;</code>
-         */
-        public com.google.protobuf.ByteString getQ() {
-          return q_;
-        }
-        /**
-         * <code>required bytes q = 2;</code>
-         */
-        public Builder setQ(com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-          q_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required bytes q = 2;</code>
-         */
-        public Builder clearQ() {
-          bitField0_ = (bitField0_ & ~0x00000004);
-          q_ = getDefaultInstance().getQ();
-          onChanged();
-          return this;
-        }
-
-        // required bytes g = 3;
-        private com.google.protobuf.ByteString g_ = com.google.protobuf.ByteString.EMPTY;
-        /**
-         * <code>required bytes g = 3;</code>
-         */
-        public boolean hasG() {
-          return ((bitField0_ & 0x00000008) == 0x00000008);
-        }
-        /**
-         * <code>required bytes g = 3;</code>
-         */
-        public com.google.protobuf.ByteString getG() {
-          return g_;
-        }
-        /**
-         * <code>required bytes g = 3;</code>
-         */
-        public Builder setG(com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-          g_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required bytes g = 3;</code>
-         */
-        public Builder clearG() {
-          bitField0_ = (bitField0_ & ~0x00000008);
-          g_ = getDefaultInstance().getG();
-          onChanged();
-          return this;
-        }
-
-        // repeated .Msg.AddParticipant.PublicData publicData = 5;
+        // repeated .Msg.AddParticipant.PublicData publicData = 3;
         private java.util.List<Message.Msg.AddParticipant.PublicData> publicData_ =
           java.util.Collections.emptyList();
         private void ensurePublicDataIsMutable() {
-          if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          if (!((bitField0_ & 0x00000004) == 0x00000004)) {
             publicData_ = new java.util.ArrayList<Message.Msg.AddParticipant.PublicData>(publicData_);
-            bitField0_ |= 0x00000010;
+            bitField0_ |= 0x00000004;
            }
         }
 
@@ -4733,7 +6064,7 @@ public final class Message {
             Message.Msg.AddParticipant.PublicData, Message.Msg.AddParticipant.PublicData.Builder, Message.Msg.AddParticipant.PublicDataOrBuilder> publicDataBuilder_;
 
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public java.util.List<Message.Msg.AddParticipant.PublicData> getPublicDataList() {
           if (publicDataBuilder_ == null) {
@@ -4743,7 +6074,7 @@ public final class Message {
           }
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public int getPublicDataCount() {
           if (publicDataBuilder_ == null) {
@@ -4753,7 +6084,7 @@ public final class Message {
           }
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Message.Msg.AddParticipant.PublicData getPublicData(int index) {
           if (publicDataBuilder_ == null) {
@@ -4763,7 +6094,7 @@ public final class Message {
           }
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder setPublicData(
             int index, Message.Msg.AddParticipant.PublicData value) {
@@ -4780,7 +6111,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder setPublicData(
             int index, Message.Msg.AddParticipant.PublicData.Builder builderForValue) {
@@ -4794,7 +6125,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder addPublicData(Message.Msg.AddParticipant.PublicData value) {
           if (publicDataBuilder_ == null) {
@@ -4810,7 +6141,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder addPublicData(
             int index, Message.Msg.AddParticipant.PublicData value) {
@@ -4827,7 +6158,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder addPublicData(
             Message.Msg.AddParticipant.PublicData.Builder builderForValue) {
@@ -4841,7 +6172,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder addPublicData(
             int index, Message.Msg.AddParticipant.PublicData.Builder builderForValue) {
@@ -4855,7 +6186,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder addAllPublicData(
             java.lang.Iterable<? extends Message.Msg.AddParticipant.PublicData> values) {
@@ -4869,12 +6200,12 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder clearPublicData() {
           if (publicDataBuilder_ == null) {
             publicData_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000004);
             onChanged();
           } else {
             publicDataBuilder_.clear();
@@ -4882,7 +6213,7 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Builder removePublicData(int index) {
           if (publicDataBuilder_ == null) {
@@ -4895,14 +6226,14 @@ public final class Message {
           return this;
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Message.Msg.AddParticipant.PublicData.Builder getPublicDataBuilder(
             int index) {
           return getPublicDataFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Message.Msg.AddParticipant.PublicDataOrBuilder getPublicDataOrBuilder(
             int index) {
@@ -4912,7 +6243,7 @@ public final class Message {
           }
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public java.util.List<? extends Message.Msg.AddParticipant.PublicDataOrBuilder> 
              getPublicDataOrBuilderList() {
@@ -4923,14 +6254,14 @@ public final class Message {
           }
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Message.Msg.AddParticipant.PublicData.Builder addPublicDataBuilder() {
           return getPublicDataFieldBuilder().addBuilder(
               Message.Msg.AddParticipant.PublicData.getDefaultInstance());
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public Message.Msg.AddParticipant.PublicData.Builder addPublicDataBuilder(
             int index) {
@@ -4938,7 +6269,7 @@ public final class Message {
               index, Message.Msg.AddParticipant.PublicData.getDefaultInstance());
         }
         /**
-         * <code>repeated .Msg.AddParticipant.PublicData publicData = 5;</code>
+         * <code>repeated .Msg.AddParticipant.PublicData publicData = 3;</code>
          */
         public java.util.List<Message.Msg.AddParticipant.PublicData.Builder> 
              getPublicDataBuilderList() {
@@ -4951,7 +6282,7 @@ public final class Message {
             publicDataBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
                 Message.Msg.AddParticipant.PublicData, Message.Msg.AddParticipant.PublicData.Builder, Message.Msg.AddParticipant.PublicDataOrBuilder>(
                     publicData_,
-                    ((bitField0_ & 0x00000010) == 0x00000010),
+                    ((bitField0_ & 0x00000004) == 0x00000004),
                     getParentForChildren(),
                     isClean());
             publicData_ = null;
@@ -5069,35 +6400,45 @@ public final class Message {
       return init_;
     }
 
+    // optional .Msg.Joining joining = 6;
+    public static final int JOINING_FIELD_NUMBER = 6;
+    private Message.Msg.Joining joining_;
+    /**
+     * <code>optional .Msg.Joining joining = 6;</code>
+     */
+    public boolean hasJoining() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional .Msg.Joining joining = 6;</code>
+     */
+    public Message.Msg.Joining getJoining() {
+      return joining_;
+    }
+    /**
+     * <code>optional .Msg.Joining joining = 6;</code>
+     */
+    public Message.Msg.JoiningOrBuilder getJoiningOrBuilder() {
+      return joining_;
+    }
+
     // optional .Msg.AddParticipant addParticipant = 7;
     public static final int ADDPARTICIPANT_FIELD_NUMBER = 7;
     private Message.Msg.AddParticipant addParticipant_;
     /**
      * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-     *
-     * <pre>
-     *optional Joining joining = 6;
-     * </pre>
      */
     public boolean hasAddParticipant() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
      * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-     *
-     * <pre>
-     *optional Joining joining = 6;
-     * </pre>
      */
     public Message.Msg.AddParticipant getAddParticipant() {
       return addParticipant_;
     }
     /**
      * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-     *
-     * <pre>
-     *optional Joining joining = 6;
-     * </pre>
      */
     public Message.Msg.AddParticipantOrBuilder getAddParticipantOrBuilder() {
       return addParticipant_;
@@ -5109,6 +6450,7 @@ public final class Message {
       keyAgreementPart1_ = Message.Msg.KeyAgreementPart1.getDefaultInstance();
       keyAgreementPart2_ = Message.Msg.KeyAgreementPart2.getDefaultInstance();
       init_ = Message.Msg.InitMsg.getDefaultInstance();
+      joining_ = Message.Msg.Joining.getDefaultInstance();
       addParticipant_ = Message.Msg.AddParticipant.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
@@ -5142,6 +6484,12 @@ public final class Message {
           return false;
         }
       }
+      if (hasJoining()) {
+        if (!getJoining().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       if (hasAddParticipant()) {
         if (!getAddParticipant().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -5171,6 +6519,9 @@ public final class Message {
         output.writeMessage(5, init_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(6, joining_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeMessage(7, addParticipant_);
       }
       getUnknownFields().writeTo(output);
@@ -5203,6 +6554,10 @@ public final class Message {
           .computeMessageSize(5, init_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, joining_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(7, addParticipant_);
       }
@@ -5317,6 +6672,7 @@ public final class Message {
           getKeyAgreementPart1FieldBuilder();
           getKeyAgreementPart2FieldBuilder();
           getInitFieldBuilder();
+          getJoiningFieldBuilder();
           getAddParticipantFieldBuilder();
         }
       }
@@ -5348,12 +6704,18 @@ public final class Message {
           initBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000010);
+        if (joiningBuilder_ == null) {
+          joining_ = Message.Msg.Joining.getDefaultInstance();
+        } else {
+          joiningBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
         if (addParticipantBuilder_ == null) {
           addParticipant_ = Message.Msg.AddParticipant.getDefaultInstance();
         } else {
           addParticipantBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -5417,6 +6779,14 @@ public final class Message {
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
+        if (joiningBuilder_ == null) {
+          result.joining_ = joining_;
+        } else {
+          result.joining_ = joiningBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
         if (addParticipantBuilder_ == null) {
           result.addParticipant_ = addParticipant_;
         } else {
@@ -5453,6 +6823,9 @@ public final class Message {
         if (other.hasInit()) {
           mergeInit(other.getInit());
         }
+        if (other.hasJoining()) {
+          mergeJoining(other.getJoining());
+        }
         if (other.hasAddParticipant()) {
           mergeAddParticipant(other.getAddParticipant());
         }
@@ -5483,6 +6856,12 @@ public final class Message {
         }
         if (hasInit()) {
           if (!getInit().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasJoining()) {
+          if (!getJoining().isInitialized()) {
             
             return false;
           }
@@ -5935,26 +7314,135 @@ public final class Message {
         return initBuilder_;
       }
 
+      // optional .Msg.Joining joining = 6;
+      private Message.Msg.Joining joining_ = Message.Msg.Joining.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          Message.Msg.Joining, Message.Msg.Joining.Builder, Message.Msg.JoiningOrBuilder> joiningBuilder_;
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public boolean hasJoining() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public Message.Msg.Joining getJoining() {
+        if (joiningBuilder_ == null) {
+          return joining_;
+        } else {
+          return joiningBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public Builder setJoining(Message.Msg.Joining value) {
+        if (joiningBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          joining_ = value;
+          onChanged();
+        } else {
+          joiningBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public Builder setJoining(
+          Message.Msg.Joining.Builder builderForValue) {
+        if (joiningBuilder_ == null) {
+          joining_ = builderForValue.build();
+          onChanged();
+        } else {
+          joiningBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public Builder mergeJoining(Message.Msg.Joining value) {
+        if (joiningBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              joining_ != Message.Msg.Joining.getDefaultInstance()) {
+            joining_ =
+              Message.Msg.Joining.newBuilder(joining_).mergeFrom(value).buildPartial();
+          } else {
+            joining_ = value;
+          }
+          onChanged();
+        } else {
+          joiningBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public Builder clearJoining() {
+        if (joiningBuilder_ == null) {
+          joining_ = Message.Msg.Joining.getDefaultInstance();
+          onChanged();
+        } else {
+          joiningBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public Message.Msg.Joining.Builder getJoiningBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getJoiningFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      public Message.Msg.JoiningOrBuilder getJoiningOrBuilder() {
+        if (joiningBuilder_ != null) {
+          return joiningBuilder_.getMessageOrBuilder();
+        } else {
+          return joining_;
+        }
+      }
+      /**
+       * <code>optional .Msg.Joining joining = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          Message.Msg.Joining, Message.Msg.Joining.Builder, Message.Msg.JoiningOrBuilder> 
+          getJoiningFieldBuilder() {
+        if (joiningBuilder_ == null) {
+          joiningBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              Message.Msg.Joining, Message.Msg.Joining.Builder, Message.Msg.JoiningOrBuilder>(
+                  joining_,
+                  getParentForChildren(),
+                  isClean());
+          joining_ = null;
+        }
+        return joiningBuilder_;
+      }
+
       // optional .Msg.AddParticipant addParticipant = 7;
       private Message.Msg.AddParticipant addParticipant_ = Message.Msg.AddParticipant.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           Message.Msg.AddParticipant, Message.Msg.AddParticipant.Builder, Message.Msg.AddParticipantOrBuilder> addParticipantBuilder_;
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public boolean hasAddParticipant() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public Message.Msg.AddParticipant getAddParticipant() {
         if (addParticipantBuilder_ == null) {
@@ -5965,10 +7453,6 @@ public final class Message {
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public Builder setAddParticipant(Message.Msg.AddParticipant value) {
         if (addParticipantBuilder_ == null) {
@@ -5980,15 +7464,11 @@ public final class Message {
         } else {
           addParticipantBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         return this;
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public Builder setAddParticipant(
           Message.Msg.AddParticipant.Builder builderForValue) {
@@ -5998,19 +7478,15 @@ public final class Message {
         } else {
           addParticipantBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         return this;
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public Builder mergeAddParticipant(Message.Msg.AddParticipant value) {
         if (addParticipantBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+          if (((bitField0_ & 0x00000040) == 0x00000040) &&
               addParticipant_ != Message.Msg.AddParticipant.getDefaultInstance()) {
             addParticipant_ =
               Message.Msg.AddParticipant.newBuilder(addParticipant_).mergeFrom(value).buildPartial();
@@ -6021,15 +7497,11 @@ public final class Message {
         } else {
           addParticipantBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         return this;
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public Builder clearAddParticipant() {
         if (addParticipantBuilder_ == null) {
@@ -6038,27 +7510,19 @@ public final class Message {
         } else {
           addParticipantBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public Message.Msg.AddParticipant.Builder getAddParticipantBuilder() {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         onChanged();
         return getAddParticipantFieldBuilder().getBuilder();
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       public Message.Msg.AddParticipantOrBuilder getAddParticipantOrBuilder() {
         if (addParticipantBuilder_ != null) {
@@ -6069,10 +7533,6 @@ public final class Message {
       }
       /**
        * <code>optional .Msg.AddParticipant addParticipant = 7;</code>
-       *
-       * <pre>
-       *optional Joining joining = 6;
-       * </pre>
        */
       private com.google.protobuf.SingleFieldBuilder<
           Message.Msg.AddParticipant, Message.Msg.AddParticipant.Builder, Message.Msg.AddParticipantOrBuilder> 
@@ -6125,6 +7585,16 @@ public final class Message {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Msg_InitMsg_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_Msg_InitMsg_IdAndPort_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_Msg_InitMsg_IdAndPort_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_Msg_Joining_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_Msg_Joining_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_Msg_AddParticipant_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -6143,28 +7613,32 @@ public final class Message {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rmessage.proto\"\324\006\n\003Msg\022\020\n\010senderId\030\001 \002(" +
+      "\n\rmessage.proto\"\327\007\n\003Msg\022\020\n\010senderId\030\001 \002(" +
       "\005\022\027\n\004type\030\002 \002(\0162\t.Msg.Type\0221\n\021keyAgreeme" +
       "ntPart1\030\003 \001(\0132\026.Msg.KeyAgreementPart1\0221\n" +
       "\021keyAgreementPart2\030\004 \001(\0132\026.Msg.KeyAgreem" +
-      "entPart2\022\032\n\004init\030\005 \001(\0132\014.Msg.InitMsg\022+\n\016" +
-      "addParticipant\030\007 \001(\0132\023.Msg.AddParticipan" +
-      "t\032P\n\021KeyAgreementPart1\022\017\n\007pubKeyY\030\002 \002(\014\022" +
-      "*\n\"pubValuesGeneratedFromCoefficients\030\003 " +
-      "\003(\014\032\225\001\n\021KeyAgreementPart2\022\017\n\007pubKeyR\030\002 \002" +
-      "(\014\022@\n\020encryptedSubKeys\030\003 \003(\0132&.Msg.KeyAg",
-      "reementPart2.EncryptedSubKey\032-\n\017Encrypte" +
-      "dSubKey\022\n\n\002id\030\001 \002(\005\022\016\n\006subKey\030\002 \002(\014\0326\n\007I" +
-      "nitMsg\022\t\n\001p\030\001 \002(\014\022\t\n\001q\030\002 \002(\014\022\t\n\001g\030\003 \002(\014\022" +
-      "\n\n\002id\030\004 \003(\005\032\320\001\n\016AddParticipant\022\022\n\nnextPe" +
-      "riod\030\004 \002(\005\022\t\n\001p\030\001 \002(\014\022\t\n\001q\030\002 \002(\014\022\t\n\001g\030\003 " +
-      "\002(\014\0222\n\npublicData\030\005 \003(\0132\036.Msg.AddPartici" +
-      "pant.PublicData\032U\n\nPublicData\022\n\n\002id\030\001 \002(" +
-      "\005\022\017\n\007pubKeyY\030\002 \002(\014\022*\n\"pubValuesGenerated" +
-      "FromCoefficients\030\003 \003(\014\"~\n\004Type\022\025\n\021KEYAGR" +
-      "EEMENTPART1\020\001\022\025\n\021KEYAGREEMENTPART2\020\002\022\013\n\007",
-      "INITMSG\020\003\022\022\n\016ADDPARTICIPANT\020\004\022\013\n\007JOINING" +
-      "\020\005\022\013\n\007LEAVING\020\006\022\r\n\tNEWPERIOD\020\007"
+      "entPart2\022\032\n\004init\030\005 \001(\0132\014.Msg.InitMsg\022\035\n\007" +
+      "joining\030\006 \001(\0132\014.Msg.Joining\022+\n\016addPartic" +
+      "ipant\030\007 \001(\0132\023.Msg.AddParticipant\032;\n\021KeyA" +
+      "greementPart1\022\017\n\007pubKeyY\030\001 \002(\014\022\025\n\rpubPol" +
+      "ynomial\030\002 \003(\014\032\245\001\n\021KeyAgreementPart2\022\016\n\006p" +
+      "eriod\030\001 \002(\005\022\017\n\007pubKeyR\030\002 \002(\014\022@\n\020encrypte",
+      "dSubKeys\030\003 \003(\0132&.Msg.KeyAgreementPart2.E" +
+      "ncryptedSubKey\032-\n\017EncryptedSubKey\022\n\n\002id\030" +
+      "\001 \002(\005\022\016\n\006subKey\030\002 \002(\014\032|\n\007InitMsg\022\t\n\001p\030\001 " +
+      "\002(\014\022\t\n\001q\030\002 \002(\014\022\t\n\001g\030\003 \002(\014\022)\n\tidAndPort\030\004" +
+      " \003(\0132\026.Msg.InitMsg.IdAndPort\032%\n\tIdAndPor" +
+      "t\022\n\n\002id\030\001 \002(\005\022\014\n\004port\030\002 \002(\005\032J\n\007Joining\0221" +
+      "\n\021keyAgreementPart1\030\001 \002(\0132\026.Msg.KeyAgree" +
+      "mentPart1\022\014\n\004port\030\002 \002(\005\032\266\001\n\016AddParticipa" +
+      "nt\022\022\n\nnextPeriod\030\001 \002(\005\022\032\n\004init\030\002 \002(\0132\014.M" +
+      "sg.InitMsg\0222\n\npublicData\030\003 \003(\0132\036.Msg.Add",
+      "Participant.PublicData\032@\n\nPublicData\022\n\n\002" +
+      "id\030\001 \002(\005\022\017\n\007pubKeyY\030\002 \002(\014\022\025\n\rpubPolynomi" +
+      "al\030\003 \003(\014\"o\n\004Type\022\025\n\021KEYAGREEMENTPART1\020\001\022" +
+      "\025\n\021KEYAGREEMENTPART2\020\002\022\013\n\007INITMSG\020\003\022\022\n\016A" +
+      "DDPARTICIPANT\020\004\022\013\n\007JOINING\020\005\022\013\n\007LEAVING\020" +
+      "\006"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6176,19 +7650,19 @@ public final class Message {
           internal_static_Msg_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Msg_descriptor,
-              new java.lang.String[] { "SenderId", "Type", "KeyAgreementPart1", "KeyAgreementPart2", "Init", "AddParticipant", });
+              new java.lang.String[] { "SenderId", "Type", "KeyAgreementPart1", "KeyAgreementPart2", "Init", "Joining", "AddParticipant", });
           internal_static_Msg_KeyAgreementPart1_descriptor =
             internal_static_Msg_descriptor.getNestedTypes().get(0);
           internal_static_Msg_KeyAgreementPart1_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Msg_KeyAgreementPart1_descriptor,
-              new java.lang.String[] { "PubKeyY", "PubValuesGeneratedFromCoefficients", });
+              new java.lang.String[] { "PubKeyY", "PubPolynomial", });
           internal_static_Msg_KeyAgreementPart2_descriptor =
             internal_static_Msg_descriptor.getNestedTypes().get(1);
           internal_static_Msg_KeyAgreementPart2_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Msg_KeyAgreementPart2_descriptor,
-              new java.lang.String[] { "PubKeyR", "EncryptedSubKeys", });
+              new java.lang.String[] { "Period", "PubKeyR", "EncryptedSubKeys", });
           internal_static_Msg_KeyAgreementPart2_EncryptedSubKey_descriptor =
             internal_static_Msg_KeyAgreementPart2_descriptor.getNestedTypes().get(0);
           internal_static_Msg_KeyAgreementPart2_EncryptedSubKey_fieldAccessorTable = new
@@ -6200,19 +7674,31 @@ public final class Message {
           internal_static_Msg_InitMsg_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Msg_InitMsg_descriptor,
-              new java.lang.String[] { "P", "Q", "G", "Id", });
-          internal_static_Msg_AddParticipant_descriptor =
+              new java.lang.String[] { "P", "Q", "G", "IdAndPort", });
+          internal_static_Msg_InitMsg_IdAndPort_descriptor =
+            internal_static_Msg_InitMsg_descriptor.getNestedTypes().get(0);
+          internal_static_Msg_InitMsg_IdAndPort_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_Msg_InitMsg_IdAndPort_descriptor,
+              new java.lang.String[] { "Id", "Port", });
+          internal_static_Msg_Joining_descriptor =
             internal_static_Msg_descriptor.getNestedTypes().get(3);
+          internal_static_Msg_Joining_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_Msg_Joining_descriptor,
+              new java.lang.String[] { "KeyAgreementPart1", "Port", });
+          internal_static_Msg_AddParticipant_descriptor =
+            internal_static_Msg_descriptor.getNestedTypes().get(4);
           internal_static_Msg_AddParticipant_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Msg_AddParticipant_descriptor,
-              new java.lang.String[] { "NextPeriod", "P", "Q", "G", "PublicData", });
+              new java.lang.String[] { "NextPeriod", "Init", "PublicData", });
           internal_static_Msg_AddParticipant_PublicData_descriptor =
             internal_static_Msg_AddParticipant_descriptor.getNestedTypes().get(0);
           internal_static_Msg_AddParticipant_PublicData_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Msg_AddParticipant_PublicData_descriptor,
-              new java.lang.String[] { "Id", "PubKeyY", "PubValuesGeneratedFromCoefficients", });
+              new java.lang.String[] { "Id", "PubKeyY", "PubPolynomial", });
           return null;
         }
       };

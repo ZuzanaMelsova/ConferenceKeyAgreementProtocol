@@ -1,38 +1,48 @@
-import java.util.List;
 import java.util.Map;
-
 /**
- * The main class
+ * @author Zuzana Melsova
+ * This class handles start of key agreement protocol and adding/removing participants.
  */
 public class KeyAgreement {
 
+    private KeyAgreementEngine stateEngine;
 
-    private StateClass stateEngine;
-
-
+    /**
+     * Creates an instance which represents a participant with given id and port.
+     * @param id
+     * @param port
+     */
     public KeyAgreement(int id, int port) {
-        stateEngine = new StateClass(State.INITIAL,
-                new ParticipantInfo(id),
+        stateEngine = new KeyAgreementEngine(State.INITIAL,
+                new ParticipantData(id),
                 new Sockets(port));
     }
 
+    /**
+     * Starts key agreement protocol with given participants.
+     * @param conferenceParticipants - ports associated with participants IDs
+     */
     public void startKeyAgreement(Map<Integer, Integer> conferenceParticipants) {
-
-        //stateEngine.processEvent(new Event(EventType.STARTKEYAGREEMENT));
-
+        stateEngine.processEvent(new Event(EventType.STARTKEYAGREEMENT, conferenceParticipants));
     }
 
+    /**
+     * Starts re-keying phase without the participant which is calling this method.
+     */
     public void leaveConference() {
         stateEngine.processEvent(new Event(EventType.LEAVE));
-
     }
 
-    public void addParticipant() {
-        stateEngine.processEvent(new Event(EventType.ADDPARTICIPANT));
-
+    /**
+     * Starts re-keying phase with the new participant with given id and port.
+     * @param id - the new member's id
+     * @param port - the new member's port
+     */
+    public void addParticipant(int id, int port) {
+        stateEngine.processEvent(new Event(EventType.ADDPARTICIPANT, id, port));
     }
 
-    public StateClass getStateEngine() {
+    public KeyAgreementEngine getStateEngine() {
         return stateEngine;
     }
 }
